@@ -1,0 +1,19 @@
+<section class="container section4">
+        <div class="row">
+            <div class="col-sm-1 col-md-2"></div>
+            <div class="col-12 col-sm-10 col-md-8 operation">
+                <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+                <p>{{titles.section4.howCanHelp[lang]}}</p>
+                <p>{{titles.section4.dropALine[lang]}}</p>
+                <form>     
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="aiderMessageText">
+                        <button ng-disabled="!aiderMessageText" class="btn btn-outline-secondary" ng-click="aiderSendEmail(aiderMessageText)" type="button">{{titles.section4.send[lang]}}</button>
+                    </div>     
+                </form>
+                <p>{{titles.section4.hoursOperation[lang]}}</p>
+                <p>{{titles.section4.workingDays[lang]}}</p>
+                <p>{{titles.section4.holidays[lang]}}</p>
+            </div>
+        </div>
+    </section>

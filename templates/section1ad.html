@@ -1,0 +1,413 @@
+<div class="container section1ad">
+    <div class="row head">
+        <div class="col-sm-4 col-md-4 col-lg-4"><a ng-class="admin_head_class[0]" ng-click="admin_head_clicked(0)">{{titles.section1Ad.teaOrders[lang]}}</a></div>
+        <div class="col-sm-4 col-md-4 col-lg-4"><a ng-class="admin_head_class[1]" ng-click="admin_head_clicked(1)">{{titles.section1Ad.weedOrders[lang]}}</a></div>
+        <div class="col-sm-4 col-md-4 col-lg-4"><a ng-class="admin_head_class[2]" ng-click="admin_head_clicked(2)">{{titles.section1Ad.userProfiles[lang]}}</a></div>
+    </div>
+
+    <div class="row body tea" ng-if="admin_head_class[0]">
+            <div class="col-xs-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><input type="text" class="form-control" ng-change="currentPage_weed=1" ng-model="cDate" value=""></th>
+                                <th><input type="text" class="form-control" ng-change="currentPage_weed=1" ng-model="cName" value=""></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th><button ng-click="dataRefresh_tea()" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button></th>
+                            </tr>
+                            <tr>
+                                <th ng-click="sorting_weed(0)">{{titles.section1Ad.orderDate[lang]}} <span class="{{glyphSort_weed[0]}}"></span></th>
+                                <th ng-click="sorting_weed(1)">{{titles.section1Ad.customerName[lang]}} <span class="{{glyphSort_weed[1]}}"></span></th>
+                                <th ng-click="sorting_weed(2)">{{titles.section1Ad.total[lang]}} <span class="{{glyphSort_weed[2]}}"></span></th>
+                                <th ng-click="sorting_weed(3)">{{titles.section1Ad.moneyReceived[lang]}} <span class="{{glyphSort_weed[3]}}"></span></th>
+                                <th ng-click="sorting_weed(4)">{{titles.section1Ad.orderSent[lang]}} <span class="{{glyphSort_weed[4]}}"></span></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in filtered = (teaInfo | orderBy:sortType_weed:sortReverse_weed
+                                                                        | filter:{date:cDate}
+                                                                        | filter:{client_name:cName}
+                                                            ) | startFrom: (currentPage_weed-1)*pageSize_weed | limitTo: pageSize_weed">
+                                <td>{{item.date | date:shortDate}}</td>
+                                <td>{{item.client.name}}</td>
+                                <td>{{item.total[4] | number:2}}$</td>
+                                <td><i ng-class="item.confirm.payed?'fa fa-check':'fa fa-times'" aria-hidden="true"></i></td>
+                                <td><i ng-class="item.confirm.sent?'fa fa-check':'fa fa-times'" aria-hidden="true"></i></td>
+                                <td class="last_col">
+                                    <div>
+                                        <span ng-click="full_show_tea(item)" data-toggle="modal" data-target="#show_info_tea" class="glyphicon glyphicon glyphicon-zoom-in"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="footer" class="row">
+                    <div class="col-xs-2 col-sm-2">
+                        <select ng-model="pageSize_tea">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="99999">{{titles.section1Ad.all[lang]}}</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-7 col-sm-6">
+                        <ul uib-pagination total-items="filtered.length" items-per-page="pageSize_tea" ng-model="currentPage_tea" max-size="maxSize" class="pagination-md" boundary-link-numbers="true" rotate="false"></ul>
+                    </div>
+                </div>
+        
+        
+                <div class="modal fade" id="show_info_tea" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form name="tea_facteur">
+                                    <article class="row">
+                                        <div class="form-group col-xs-12">
+                                            <label class="col-form-label">{{titles.section1Ad.orderDate[lang]}}</label>
+                                            <input type="text"class="form-control" ng-model="itemToFullShow_tea.date" readonly>
+                                        </div>
+                                        <div class="form-group col-xs-6">
+                                            <label class="col-form-label">{{titles.section1Ad.moneyReceived[lang]}}</label>
+                                            <input type="date" placeholder="YYYY-mm-dd" class="form-control" ng-model="itemToFullShow_tea.payed">
+                                        </div>
+                                        <div class="form-group col-xs-6">
+                                            <label class="col-form-label">{{titles.section1Ad.orderSent[lang]}}</label>
+                                            <input type="date"  placeholder="YYYY-mm-dd" class="form-control" ng-model="itemToFullShow_tea.sent">
+                                        </div>
+                                    </article>
+        
+                                    <article class="row">
+                                        <div class="form-group col-xs-12 col-sm-8">
+                                            <label class="col-form-label">{{titles.section1Ad.customerName[lang]}}</label>
+                                            <input type="text" required class="form-control" ng-model="itemToFullShow_tea.client.name" readonly>
+                                        </div>
+                                        <div class="form-group col-xs-12">
+                                            <label class="col-form-label">{{titles.section1Ad.address[lang]}}</label>
+                                            <input type="text" required class="form-control" ng-model="itemToFullShow_tea.client.adress">
+                                        </div>
+                                    </article>
+            
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{titles.section1Ad.title[lang]}}</th>
+                                                    <th>{{titles.section1Ad.qty[lang]}}</th>
+                                                    <th>{{titles.section1Ad.weight[lang]}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="prod in itemToFullShow_tea.products">
+                                                    <td>{{prod.title}}</td>
+                                                    <td><input type="number" ng-model="prod.order" min="0"></td>
+                                                    <td>{{prod.weight}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table">
+                                            <thead class="total">
+                                                <tr>
+                                                    <th></th>
+                                                    <th>{{titles.section1Ad.total[lang]}}</th>
+                                                    <th>{{itemToFullShow_tea.total[0]|number:2}} $</th>
+                                                </tr>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>{{titles.section1Ad.tax[lang]}}</th>
+                                                    <th>{{itemToFullShow_tea.total[1]|number:2}} $</th>
+                                                </tr>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>{{titles.section1Ad.postCost[lang]}}</th>
+                                                    <th>{{itemToFullShow_tea.total[2]|number:2}} $</th>
+                                                </tr>
+                                                <tr ng-if="itemToFullShow_tea.total[3]<0">
+                                                    <th></th>
+                                                    <th>{{titles.section1Ad.credit[lang]}}</th>
+                                                    <th>{{itemToFullShow_tea.total[3]|number:2}} $</th>
+                                                </tr>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>{{titles.section1Ad.payable[lang]}}</th>
+                                                    <th>{{itemToFullShow_tea.total[4]|number:2}} $</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" ng- ng-click="printTeaFaceur()"><i class="fa fa-print" aria-hidden="true"></i></button>
+                                <button class="btn btn-primary" ng-disabled="!tea_facteur.$dirty || tea_facteur.$invalid" ng-click="saveTeaFacteurByAdm()">{{titles.section1Ad.save[lang]}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+<!-- ----------------------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------------------- -->
+<div class="container weed" ng-if="admin_head_class[1]">
+            <div class="col-xs-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><input type="text" class="form-control" ng-change="currentPage_weed=1" ng-model="cDate" value=""></th>
+                            <th><input type="text" class="form-control" ng-change="currentPage_weed=1" ng-model="cName" value=""></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th><button ng-click="dataRefresh_weed()" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button></th>
+                        </tr>
+                        <tr>
+                            <th ng-click="sorting_weed(0)">{{titles.section1Ad.orderDate[lang]}} <span class="{{glyphSort_weed[0]}}"></span></th>
+                            <th ng-click="sorting_weed(1)">{{titles.section1Ad.customerName[lang]}} <span class="{{glyphSort_weed[1]}}"></span></th>
+                            <th ng-click="sorting_weed(2)">{{titles.section1Ad.total[lang]}} <span class="{{glyphSort_weed[2]}}"></span></th>
+                            <th ng-click="sorting_weed(3)">{{titles.section1Ad.moneyReceived[lang]}} <span class="{{glyphSort_weed[3]}}"></span></th>
+                            <th ng-click="sorting_weed(4)">{{titles.section1Ad.orderSent[lang]}} <span class="{{glyphSort_weed[4]}}"></span></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in filtered = (weedInfo | orderBy:sortType_weed:sortReverse_weed
+                                                                    | filter:{date:cDate}
+                                                                    | filter:{client_name:cName}
+                                                        ) | startFrom: (currentPage_weed-1)*pageSize_weed | limitTo: pageSize_weed">
+                            <td>{{item.date}}</td>
+                            <td>{{item.client.name}}</td>
+                            <td>{{item.total[2] | number:2}}$</td>
+                            <td><i ng-class="item.confirm.money_date?'fa fa-check':'fa fa-times'" aria-hidden="true"></i></td>
+                            <td><i ng-class="item.confirm.sent_date?'fa fa-check':'fa fa-times'" aria-hidden="true"></i></td>
+                            <td class="last_col">
+                                <div>
+                                    <span ng-click="full_show_weed(item)" data-toggle="modal" data-target="#show_info_weed" class="glyphicon glyphicon glyphicon-zoom-in"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="footer" class="row">
+                <div class="col-xs-2 col-sm-2">
+                    <select ng-model="pageSize_weed">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="99999">{{titles.section1Ad.all[lang]}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-7 col-sm-6">
+                    <ul uib-pagination total-items="filtered.length" items-per-page="pageSize_weed" ng-model="currentPage_weed" max-size="maxSize" class="pagination-md" boundary-link-numbers="true" rotate="false"></ul>
+                </div>
+            </div>
+    
+    
+            <div class="modal fade" id="show_info_weed" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form name="weed_facteur">
+                                <article class="row">
+                                    <div class="form-group col-xs-12">
+                                        <label class="col-form-label">{{titles.section1Ad.orderDate[lang]}}</label>
+                                        <input type="text" class="form-control" ng-model="itemToFullShow_weed.date" readonly>
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label class="col-form-label">{{titles.section1Ad.moneyReceived[lang]}}</label>
+                                        <input type="date" class="form-control" ng-model="itemToFullShow_weed.confirm.money_date">
+                                    </div>
+                                    <div class="form-group col-xs-6">
+                                        <label class="col-form-label">{{titles.section1Ad.orderSent[lang]}}</label>
+                                        <input type="date" class="form-control" ng-model="itemToFullShow_weed.confirm.sent_date">
+                                    </div>
+                                </article>
+    
+                                <article class="row">
+                                    <div class="form-group col-xs-12 col-sm-8">
+                                        <label class="col-form-label">{{titles.section1Ad.customerName[lang]}}</label>
+                                        <input type="text" required class="form-control" ng-model="itemToFullShow_weed.client.name" readonly>
+                                    </div>
+                                    <div class="form-group col-xs-12">
+                                        <label class="col-form-label">{{titles.section1Ad.address[lang]}}</label>
+                                        <input type="text" required class="form-control" ng-model="itemToFullShow_weed.client.adress">
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-8">
+                                        <label class="col-form-label">{{titles.section1Ad.phoneNo[lang]}}</label>
+                                        <input type="text" class="form-control" ng-model="itemToFullShow_weed.client.phon">
+                                    </div>
+                                </article>
+        
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>{{titles.section1Ad.title[lang]}}</th>
+                                                <th>{{titles.section1Ad.qty[lang]}}</th>
+                                                <th>{{titles.section1Ad.weight[lang]}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="prod in itemToFullShow_weed.products">
+                                                <td>{{prod.title}}</td>
+                                                <td>{{prod.order}}</td>
+                                                <td>{{prod.weight}} Oz</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table">
+                                        <thead class="total">
+                                            <tr>
+                                                <th></th>
+                                                <th>{{titles.section1Ad.total[lang]}}</th>
+                                                <th>{{itemToFullShow_weed.total[0]|number:2}} $</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>{{titles.section1Ad.postCost[lang]}}</th>
+                                                <th>{{itemToFullShow_weed.total[1]|number:2}} $</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th>{{titles.section1Ad.payable[lang]}}</th>
+                                                <th>{{itemToFullShow_weed.total[2]|number:2}} $</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" ng- ng-click="printWeedFaceur()"><i class="fa fa-print" aria-hidden="true"></i></button>
+                            <button class="btn btn-primary" ng-disabled="!weed_facteur.$dirty || weed_facteur.$invalid" ng-click="saveWeed()">{{titles.section1Ad.save[lang]}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- ----------------------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------------------------------- -->
+	<div class="container user-profiles" ng-if="admin_head_class[2]">
+		<div class="col-xs-12">
+			<table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><input type="text" class="form-control" ng-change="currentPage_user=1" ng-model="cId" value=""></th>
+                        <th><input type="text" class="form-control" ng-change="currentPage_user=1" ng-model="cName" value=""></th>
+                        <th></th>
+                        <th></th>
+                        <th><button ng-click="dataRefresh_user()" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button></th>
+                    </tr>
+                    <tr>
+                        <th ng-click="sorting_user(0)">ID <span class="{{glyphSort_user[0]}}"></span></th>
+                        <th ng-click="sorting_user(1)">{{titles.section1Ad.customerName[lang]}} <span class="{{glyphSort_user[1]}}"></span></th>
+                        <th ng-click="sorting_user(2)">{{titles.section1Ad.special[lang]}} <span class="{{glyphSort_user[2]}}"></span></th>
+                        <th ng-click="sorting_user(3)">{{titles.section1Ad.active[lang]}} <span class="{{glyphSort_user[3]}}"></span></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in filtered = (userInfo | orderBy:sortType_user:sortReverse_user
+                                                                | filter:{id:cId}
+                                                                | filter:{lastname:cName}
+                                                    ) | startFrom: (currentPage_user-1)*pageSize_user | limitTo: pageSize_user" ng-if="item.type!=2">
+                        <td>{{item.id}}</td>
+                        <td>{{item.lastname}}, {{item.name}}</td>
+                        <td><i ng-class="item.special?'fa fa-check':'fa fa-times'" aria-hidden="true"></i></td>
+                        <td><i ng-class="item.active?'fa fa-check':'fa fa-times'" aria-hidden="true"></i></td>
+                        <td class="last_col">
+                            <div>
+                                <span ng-click="full_show_user(item)" data-toggle="modal" data-target="#show_info_user" class="glyphicon glyphicon glyphicon-zoom-in"></span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="footer row">
+            <div class="col-xs-2 col-sm-2">
+                <select ng-model="pageSize_user">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="99999">{{titles.section1Ad.all[lang]}}</option>
+                </select>
+            </div>
+            <div class="col-xs-7 col-sm-6">
+                <ul uib-pagination total-items="filtered.length" items-per-page="pageSize_user" ng-model="currentPage_user" max-size="maxSize" class="pagination-md" boundary-link-numbers="true" rotate="false"></ul>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="show_info_user" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="userInfo_change">
+                            <div class="form-group">
+                                <label class="col-form-label">{{titles.section1Ad.name[lang]}}</label>
+                                <input type="text" required class="form-control" ng-model="itemToFullShow.name">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">{{titles.section1Ad.lastName[lang]}}</label>
+                                <input type="text" required class="form-control" ng-model="itemToFullShow.lastname" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">{{titles.section1Ad.email[lang]}}</label>
+                                <input type="text" class="form-control" ng-model="itemToFullShow.username" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">{{titles.section1Ad.address[lang]}}</label>
+                                <input type="text" class="form-control" ng-model="itemToFullShow.adress">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">{{titles.section1Ad.phoneNo[lang]}}</label>
+                                <input type="text" class="form-control" ng-model="itemToFullShow.phone">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">{{titles.section1Ad.active[lang]}}</label>
+                                <label class="switch">
+                                    <input type="checkbox" ng-attr-checked={{itemToFullShow.active}} ng-model="itemToFullShow.active">
+                                    <span class="slider round"></span>
+                                </label>
+                                <p><small><em>{{titles.section1Ad.ableLogin[lang]}}</em></small></p>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">{{titles.section1Ad.special[lang]}}</label>
+                                <label class="switch">
+                                    <input type="checkbox" ng-attr-checked={{itemToFullShow.special}} ng-model="itemToFullShow.special">
+                                    <span class="slider round"></span>
+                                </label>
+                                <p><small><em>{{titles.section1Ad.seeSpecial[lang]}}</em></small></p>
+                            </div>
+                            <div class="docs" ng-repeat="doc in currentUserDocsTemp">
+                                <a href="images/docs/{{doc.name}}" target="_blank">
+                                    <div ng-if="!doc.active" class="removed"></div>
+                                    <img ng-src="images/docs/{{doc.name}}">
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" ng-disabled="!userInfo_change.$dirty || userInfo_change.$invalid" ng-click="saveUser()">{{titles.section1Ad.save[lang]}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- ========== PRINT TEA FACTEUR ========== -->
+    
