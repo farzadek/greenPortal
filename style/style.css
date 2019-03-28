@@ -19,6 +19,12 @@ body .modal-title {
 body .modal-body {
   font-family: "Noto Serif TC";
 }
+body #showUser {
+  font-size: 1.2em;
+}
+body #showUser .modal-body p .cp {
+  text-transform: uppercase;
+}
 body .switch {
   position: relative;
   display: inline-block;
@@ -1067,6 +1073,11 @@ footer p {
   text-align: left;
   text-transform: capitalize;
 }
+.section1ad .user-profiles table tbody tr td:nth-child(5) {
+  text-align: left;
+  font-size: .85em;
+  text-transform: capitalize;
+}
 .section1ad .user-profiles table tbody tr td i {
   font-size: 1.3em;
 }
@@ -1075,14 +1086,31 @@ footer p {
   font-size: 1.35em;
   padding: 0 .2em;
 }
+.section1ad .user-profiles table tbody tr td.purchase-list i {
+  cursor: pointer;
+}
 .section1ad .user-profiles .footer select {
   padding: .25em;
   border-radius: 5px;
+  margin: 20px 0;
 }
 .section1ad .user-profiles .footer select option {
   font-size: .9em;
   padding-top: .3em;
   padding-bottom: .3em;
+}
+.section1ad .user-profiles #show_purchase_list .modal-body table {
+  font-size: .9em;
+}
+.section1ad .user-profiles #show_purchase_list .modal-body table thead th {
+  text-transform: capitalize;
+  font-family: "Crete Round";
+}
+.section1ad .user-profiles #show_purchase_list .modal-body table tbody td {
+  padding: 1px 5px;
+}
+.section1ad .user-profiles #show_info_user .modal-body {
+  display: initial;
 }
 .section1ad .user-profiles #show_info_user .modal-body form .col-form-label {
   text-transform: capitalize;
@@ -1128,6 +1156,18 @@ footer p {
 }
 .section1ad .tea tbody tr td i {
   font-size: 1.35em;
+}
+.section1ad .tea tbody tr td i.clinent-info-adm {
+  font-size: .8em;
+  margin-left: .5em;
+  cursor: pointer;
+  padding: 4px 5px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 3px;
+}
+.section1ad .tea tbody tr td i.clinent-info-adm:hover {
+  border-color: #ccc;
+  color: #888;
 }
 .section1ad .tea tbody tr td.last_col span {
   font-size: 1.35em;
@@ -1227,8 +1267,28 @@ footer p {
 .section1ad #basketModal .modal-body tbody {
   font-size: .8em;
 }
-/** ---------------------------------------------------------------------- */
-@media screen and (min-width: 480px) and (max-width: 1024px) {
+/** -------- Tablet landscape -------------------------------------------------------------- */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  #teaOnlyToShowModal {
+    font-size: 1.1em;
+  }
+  .section3 .row .col-md-5 {
+    height: 220px;
+  }
+  #productModal .modal-dialog .modal-content .modal-body .right .rating i {
+    font-size: 1.5em;
+  }
+  #productModal .modal-dialog .modal-content .modal-body .right .charts .nav-tabs li a {
+    font-size: .85em;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+/** --------- Tablet portrait -------------------------------------------------------------- */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  #teaOnlyToShowModal {
+    font-size: 1em;
+  }
   .section1s .row .col-sm-4 .image {
     width: 90%;
   }
@@ -1237,6 +1297,28 @@ footer p {
   }
   #productModal .modal-dialog {
     width: 80%;
+  }
+  #productModal .modal-dialog .modal-content .modal-body .right .rating i {
+    font-size: 1.5em;
+  }
+  #productModal .modal-dialog .modal-content .modal-body .right .charts .nav-tabs li a {
+    font-size: .85em;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+/** --------- Tablet portrait -------------------------------------------------------------- */
+@media screen and (max-width: 768px) and (orientation: portrait) {
+  #productModal .modal-dialog {
+    width: 80%;
+  }
+  #productModal .modal-dialog .modal-content .modal-body .right .rating i {
+    font-size: 1.5em;
+  }
+  #productModal .modal-dialog .modal-content .modal-body .right .charts .nav-tabs li a {
+    font-size: .85em;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 /** ---------------------------------------------------------------------- */
@@ -1474,70 +1556,6 @@ footer p {
     margin-top: .5em;
   }
   #productModal .modal-dialog .modal-content .modal-body .right .descript ul li i {
-    font-size: 1.25em;
-    margin-right: .5em;
-  }
-  #weedModal .modal-dialog {
-    width: auto;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .left {
-    padding-right: .5em;
-    width: 100%;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .left img {
-    height: 150px;
-    width: 150px;
-    margin: 0 auto 1em;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .left p {
-    line-height: 1.3;
-    font-size: .8em;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .right {
-    padding-right: .5em;
-    padding-left: .5em;
-    width: 100%;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .right .grade {
-    margin-top: .5em;
-    margin-bottom: .5em;
-    font-size: 1.25em;
-    text-align: center;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .right .addBasket form {
-    width: 100%;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .right .addBasket form select {
-    font-size: 1.1em;
-    height: 2.25em;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .right .addBasket form .quantity {
-    margin: .75em auto 0;
-    display: table;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .right .addBasket form .quantity i {
-    font-size: 2em;
-    cursor: pointer;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .right .addBasket form .quantity input {
-    width: 2.5em;
-    text-align: center;
-    border: 0;
-    height: 2.25em;
-    padding: .1em .5em;
-    font-size: 2em;
-    font-family: "Crete Round";
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .right .addBasket form button {
-    margin: 0 auto;
-    display: block;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .right .descript ul li {
-    list-style-type: none;
-    font-size: 1em;
-    margin-top: .5em;
-  }
-  #weedModal .modal-dialog .modal-content .modal-body .right .descript ul li i {
     font-size: 1.25em;
     margin-right: .5em;
   }

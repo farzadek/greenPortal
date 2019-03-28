@@ -33,14 +33,6 @@ app.service('grPortalService', function($http, $q) {
             });
             return request.then( function(response){return response;}, function(){return;} );
         },
-        getWeedFacteurs: function(filter){
-            var url = 'https://api.mlab.com/api/1/databases/greenportal/collections/weedBill?q='+filter+'&apiKey='+dbApiKey;
-            var request = $http({
-                method: "get",
-                url: url
-            });
-            return request.then( function(response){return response;}, function(){return;} );
-        },
         getUsers: function(cond){
             url = 'https://api.mlab.com/api/1/databases/greenportal/collections/users?q='+cond+'&apiKey='+dbApiKey;
             var request = $http({
@@ -73,21 +65,6 @@ app.service('grPortalService', function($http, $q) {
                 method: "post",
                 url: url,
                 data: JSON.stringify(order),
-                headers: { "Content-Type": "application/json; charset=utf8" }
-            });
-            return request.then( function(response){return response;}, function(response){return response;} );
-        },
-        saveWeedFacteur: function(order){
-            url = 'https://api.mlab.com/api/1/databases/greenportal/collections/weedBill?apiKey='+dbApiKey;
-            s = [];
-            order.products.forEach(function(p){
-                s.push({"id":p.id,"order":p.order,"price":p.price,"title":p.title,"weight":p.weight});
-            });
-            var n = {"client":order.client,"confirm":order.confirm,"date":order.date,"total":order.total,"products":s};
-            var request = $http({
-                method: "post",
-                url: url,
-                data: JSON.stringify(n),
                 headers: { "Content-Type": "application/json; charset=utf8" }
             });
             return request.then( function(response){return response;}, function(response){return response;} );
@@ -142,29 +119,6 @@ app.service('grPortalService', function($http, $q) {
             });
             return request.then( function(response){return response;}, function(response){return response;} );
         },
-        updateTeaFacteur: function(order){ 
-            var p = [];
-            order.products.forEach(
-                function(e){
-                    p.push({"title":e.title,"price":e.price,"order":e.order,"sku":e.sku,"weight":e.weight});
-                }
-            );
-            url = 'https://api.mlab.com/api/1/databases/greenportal/collections/teaBill/'+order._id.$oid+'?apiKey='+dbApiKey;
-            var request = $http({
-                method: "put",
-                url: url,
-                data: JSON.stringify({
-                    "client": order.client,
-                    "products": p,
-                    "date": order.date,
-                    "payed": order.payed,
-                    "sent": order.sent,
-                    "total": order.total
-                }),
-                headers: { "Content-Type": "application/json; charset=utf8" }
-            });
-            return request.then( function(response){return response;}, function(response){return response;} );
-        },
 
 // --------------------------------------------------------------------------------        
         getProductsGroup: function() {
@@ -200,6 +154,31 @@ app.service('grPortalService', function($http, $q) {
                 url: url
             });
             return request.then( function(response){return response;}, function(){return;} );
+        },
+        updateFacteur: function(order){ 
+            var p = []; 
+            order.products.forEach(
+                function(e){
+                    if(e.no>0){
+                        p.push({"id":e.id,"name":e.name,"price":e.price,"no":e.no,"weight":e.weight});
+                    }
+                }
+            );
+            url = 'https://api.mlab.com/api/1/databases/greenportal/collections/bill/'+order._id.$oid+'?apiKey='+dbApiKey;
+            var request = $http({
+                method: "put",
+                url: url,
+                data: JSON.stringify({
+                    "client": order.client,
+                    "products": p,
+                    "date": order.date,
+                    "payed": order.payed,
+                    "sent": order.sent,
+                    "total": order.total
+                }),
+                headers: { "Content-Type": "application/json; charset=utf8" }
+            });
+            return request.then( function(response){return response;}, function(response){return response;} );
         },
 
     });

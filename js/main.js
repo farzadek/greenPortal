@@ -87,6 +87,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
     $scope.dbApiKey = "JIZlGld1NOk4SsznMiAvb78pr7zzAjom";
     $scope.maxSize = 5; //how many buttons for pagination
     $scope.currentUser;
+    $scope.thisUserTemp;
     $scope.currentUserDocs = [];
     $scope.currentUserDocsTemp = [];
     $scope.showSpecialProducts = false; // switch to special products
@@ -114,6 +115,14 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
     $scope.purchaseProcessStep = 0;
 
     $scope.pendingPurchases = [];
+    $scope.purchasesInfo = []; // for admin page
+
+    $scope.pageSize_orders = "99999"; // for admin table
+    $scope.currentPage_orders = "1"; // for admin table
+    $scope.currentPage_user = "1";
+
+    $scope.purchaseToShowAdmin = []; // temp var, fill when admin click on + on admin page
+
     /* ------------------------------------- *//*
     $scope.itemsToShowCount = 10;
     $scope.showTeaGroup = 0;
@@ -204,7 +213,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
                         $cookieStore.put('id', $scope.currentUser.id); 
                         if($scope.currentUser.special){
                             grPortalService.getProducts('{"special":true}').then(
-                                function(res){ console.log(res);
+                                function(res){
                                      $scope.weed = res.data;
                                 },
                                 function(){
@@ -477,9 +486,187 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
 
 /* --------------------------------------------------------------------------- */
     $scope.showFacteur_ToShow = function(order){
-        $scope.orderToShow = order; console.log($scope.orderToShow);
+        $scope.orderToShow = order;
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.admin_head_clicked = function(item){
+        $scope.admin_head_class = ['','',''];
+        $scope.admin_head_class[item] = 'active';
+        if(item==0){    // orders
+            $scope.showLoader = true;
+            grPortalService.getFacteurs('{}').then(
+                function successCallback(response) {
+                    if(response.status!=200){
+                        alert($scope.titles[$scope.lang][83]);}
+                    else{
+                        $scope.showLoader = false;
+                        $scope.purchasesInfo = response.data;
+                        $scope.totalItems = $scope.purchasesInfo.length;
+                        $timeout(function () { $scope.showLoader=false; }, 300);
+                    }
+                }, 
+                function errorCallback(response) {
+                    $scope.purchasesInfo = [];
+                    alert('ERROR');
+                }
+            );          
+        }
+        if(item==1){
+            $scope.showLoader = true;
+            grPortalService.getUsers('{}').then(
+                function successCallback(response) {
+                    if(response.status!=200){
+                        alert($scope.titles[$scope.lang][83]);}
+                    else{
+                        $scope.showLoader = false;
+                        $scope.userInfo = response.data;
+                        $scope.totalItems = $scope.userInfo.length;
+                    }
+                },
+                function errorCallback() {
+                    $scope.userInfo = [];
+                    alert('ERROR');
+                }
+            );
+            $timeout(function () { $scope.showLoader=false; }, 300);
+        }
     }
     
+/* --------------------------------------------------------------------------- */
+    $scope.showClientFullInfo_admin = function(user){ // get client info for admin page
+        $scope.showLoader = true;
+        grPortalService.getUsers('{"id":'+user.id+'}').then(
+            function successCallback(response) {
+                if(response.status!=200){
+                    alert($scope.titles[$scope.lang][83]);}
+                else{
+                    $scope.showLoader = false; 
+                    $scope.thisUserTemp = response.data[0];
+                }
+            },
+            function errorCallback() {
+                $scope.userInfo = [];
+                alert('ERROR');
+            }
+        );
+        $timeout(function () { $scope.showLoader=false; }, 300);
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.full_show_purchase = function(item){ // show purchase in admin page
+        item.payed = new Date(item.payed);
+        item.sent = new Date(item.sent);
+        $scope.itemToFullShow_tea = Object.assign({}, item);
+        $scope.purchaseToShowAdmin = Object.assign({}, item);
+    }
+    
+/* --------------------------------------------------------------------------- */
+    $scope.changeNoAdmin = function(prod){
+        $scope.purchaseToShowAdmin.total = [0,0,$scope.postalPrice,0,0];
+        $scope.purchaseToShowAdmin.products.forEach(
+            function(e){
+                $scope.purchaseToShowAdmin.total[0] += e.no*e.price;
+                $scope.purchaseToShowAdmin.total[1] += $scope.purchaseToShowAdmin.total[0]*.15;
+                $scope.purchaseToShowAdmin.total[3] = $scope.purchaseToShowAdmin.total[0]>100?-$scope.purchaseToShowAdmin.total[2]:0;
+                $scope.purchaseToShowAdmin.total[4] = $scope.purchaseToShowAdmin.total[0]+$scope.purchaseToShowAdmin.total[1]+$scope.purchaseToShowAdmin.total[2]+$scope.purchaseToShowAdmin.total[3];
+            }
+        );
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.savePurchaseByAdm = function(){
+        grPortalService.updateFacteur($scope.purchaseToShowAdmin).then(
+            function(res){
+                if(res.status!=200){ alert($scope.titles[$scope.lang][83]);}
+                else{
+                    $timeout(function () { $scope.showLoader=false; }, 300);
+                    $('#show_info_tea').modal('hide');
+                }
+            },
+            function(){
+                alert($scope.titles[$scope.lang][83]);
+            }
+        );
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.dataRefreshPurchase = function(){
+        $scope.showLoader = true;
+        grPortalService.getFacteurs('{}').then(
+            function successCallback(response) {
+                if(response.status!=200){
+                    alert($scope.titles[$scope.lang][83]);}
+                else{
+                    $scope.showLoader = false;
+                    $scope.purchasesInfo = response.data;
+                    $scope.totalItems = $scope.purchasesInfo.length;
+                    $timeout(function () { $scope.showLoader=false; }, 300);
+                }
+            }, 
+            function errorCallback(response) {
+                $scope.purchasesInfo = [];
+                alert('ERROR');
+            }
+        );          
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.updateUserAdm = function(user){
+        grPortalService.updateUserInfo(user).then(
+            function successCallback(response) {
+                if(response.status!=200){
+                    alert($scope.titles[$scope.lang][83]);}
+                else{
+                    $timeout(function () { $scope.showLoader=false; }, 300);
+                    $('#show_info_user').modal('hide');
+                }
+            }, 
+            function errorCallback(response) {
+                alert('ERROR');
+            }
+        )
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.dataRefresh_user = function() {
+        $scope.showLoader=true;
+        grPortalService.getUsers('{}').then(
+            function(res){
+                if(res.status!=200){
+                    alert($scope.titles[$scope.lang][83]);}
+                else{
+                    $timeout(function () { $scope.showLoader=false; }, 300);
+                    $scope.userInfo = res.data;
+                    $scope.totalItems = $scope.userInfo.length;
+                }
+            },
+            function errorCallback(response) {
+                $scope.userInfo = [];
+                alert('ERROR');
+            }
+        );
+    }
+    
+/* --------------------------------------------------------------------------- */
+    $scope.showPurchaseList_admin = function(userId){
+        $scope.showLoader=true;
+        grPortalService.getFacteurs('{"client.id":'+userId+'}').then(
+            function(res){
+                if(res.status!=200){
+                    alert($scope.titles[$scope.lang][83]);}
+                else{
+                    $timeout(function () { $scope.showLoader=false; }, 300);
+                    $scope.userPurchaseList = res.data;
+                }
+            },
+            function errorCallback(response) {
+                $scope.userPurchaseList = [];
+                alert('ERROR');
+            }
+        );
+    }
+/* --------------------------------------------------------------------------- */
 
 });
 

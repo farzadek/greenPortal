@@ -10,7 +10,7 @@
 
     <title>GreenPortal</title>
     <script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
@@ -20,8 +20,7 @@
     <script src="js/main.js"></script>
     <script src="js/services.js"></script>
     <script src="js/titles.js"></script>
-
-    </head>
+</head>
 
 <body id="page-top" ng-app="greenPortalApp" ng-controller="mainCtrl">
 
@@ -63,7 +62,7 @@
                 <div class="modal-body">
                     <form name="loginForm" novalidate>
                     <div class="form-group">
-                        <label for="username" class="col-form-label">{{titles.index.username[lang]}}:</label>
+                        <label for="username" class="col-form-label">{{titles.index.email[lang]}}:</label>
                         <input type="text" class="form-control" ng-model="username" id="username">
                     </div>
                     <div class="form-group">
@@ -404,7 +403,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <table class="table">
+                    <table class="table table-striped">
                         <thead>
                             <tr>{{titles.showFacteurModal.date[lang]}}: <strong>{{orderToShow.date}}</strong></tr>
                             <tr>
@@ -536,7 +535,7 @@
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6 col-sm-6">
-                                                        <label>{{titles.index.username[lang]}}</label>
+                                                        <label>{{titles.index.email[lang]}} <sub><em>({{titles.index.username[lang]}})</em></sub></label>
                                                         <input type="email" class="form-control" ng-model="currentUser.username" required>
                                                     </div>
                                                 </div>

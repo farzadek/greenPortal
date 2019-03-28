@@ -56,8 +56,7 @@ Titles = {
         "send":["send","envoyer"]
     },
     "section1Ad":{
-        "teaOrders":["Tea orders","Commandes de thé"], 
-        "weedOrders":["Weed orders","Commandes de weed"], 
+        "orders":["Orders","Commandes"], 
         "userProfiles":["user profiles","des profils d'utilisateurs"],
         "orderDate":["order date","date de commande"], 
         "customerName":["Customer name","Nom du client"], 
@@ -81,7 +80,13 @@ Titles = {
         "lastName":["Last name","Nom de famille"], 
         "email":["Email","Email"], 
         "ableLogin":["Able to login","Capable de se connecter"], 
-        "seeSpecial":["Able to see the special products","Capable de voir les produits spéciaux"]
+        "seeSpecial":["Able to see the special products","Capable de voir les produits spéciaux"],
+        "customerInfo":["Client information","Informations client"],
+        "price":["Price","Prix"],
+        "prCity":["Province/City","Province/Ville"],
+        "pCode":["p.code","c.postale"],
+        "city":["city","ville"], 
+        "province":["province","province"], 
     },
     "section2s":{
         "products":["products","produits"], 
