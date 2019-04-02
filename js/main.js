@@ -5,9 +5,6 @@ app.config(function($routeProvider) {
     .when("/", {
         templateUrl : "index.html"
     })
-    .when("/sec1", {
-        templateUrl : "templates/section1s.html"
-    })
     .otherwise({
         templateUrl : "index.html"
     });
@@ -118,37 +115,28 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
     $scope.purchasesInfo = []; // for admin page
 
     $scope.pageSize_orders = "99999"; // for admin table
-    $scope.currentPage_orders = "1"; // for admin table
-    $scope.currentPage_user = "1";
-
+    $scope.currentPage_orders = 1; // for admin table
+    $scope.currentPage_user = 1;
+    $scope.pageSize_user = "99999";
+    $scope.currentPage_message = 1;
+    $scope.pageSize_message = "99999";
+    
+    $scope.glyphSort_user = [];  // glyphicon for sorting asc/desc
+    $scope.glyphSort_message = [];  // glyphicon for sorting asc/desc
+    $scope.sortReverse_user  = true; // order by in DESC
+    $scope.sortReverse_message  = true; // order by in DESC
+    $scope.glyphSort_user[0] = 'glyphicon glyphicon-sort-by-attributes';
+    $scope.glyphSort_message[0] = 'glyphicon glyphicon-sort-by-attributes';
     $scope.purchaseToShowAdmin = []; // temp var, fill when admin click on + on admin page
+    $scope.contactUsFormErrMsg = ''; // contact us form, error message
 
-    /* ------------------------------------- *//*
-    $scope.itemsToShowCount = 10;
-    $scope.showTeaGroup = 0;
-    $scope.teaInfo = '';
-    $scope.purchase = [];
-    $scope.subTotal = 0;
-    $scope.filtered = '';
-    $scope.temp;
-    $scope.weed = [];
-    $scope.admin_head_class = ['','','']; 
-    $scope.showInfo = ""; 
-    $scope.usersCount = 0;
-    $scope.weedList = [];
-    $scope.usersList = [];
-    $scope.teaFacteur = {};
-    $scope.myTeaOrders = [];
-    $scope.teaBuyProcessStep = 1;
-    $scope.show_for_pritn_tea = false;
     /* ------------------------------------- */
-
     $scope.showLoader = true;
     if($cookieStore.get('id')){
         grPortalService.getUsers('{"id":'+$cookieStore.get("id")+'}').then(
             function(res){
                 if(res.status!=200){
-                    alert($scope.titles[$scope.lang][82]);}
+                    alert($scope.titles.alerts.informationLoad[$scope.lang]);}
                 else{
                     $scope.currentUser = res.data[0];
                 }
@@ -455,33 +443,35 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
     }
 
     /* --------------------------------------------------------------------------- */
-    $scope.openUserBox = function(){ 
-        $scope.currentUserDocs = [];
-        $scope.showLoader=true;
-        grPortalService.getDocsOfUser($scope.currentUser.id).then(
-            function (res) {
-                if(res.status!=200){
-                    alert($scope.titles[$scope.lang][83]);}
-                else{
-                    res.data.forEach(function(f){
-                    if(f.active){
-                        $scope.currentUserDocs.push(f);
-                    }
-                });    
-            }
-        });
-    
-        var q = '{"client.id":'+$scope.currentUser.id+',"sent":""}';
-        grPortalService.getFacteurs(q).then(
-            function(res){
-                if(res.status!=200){alert($scope.titles[$scope.lang][83]);}
-                else{
-                    $scope.pendingPurchases = res.data;
+    $scope.openUserBox = function(){
+        if($scope.currentUser){
+            $scope.currentUserDocs = [];
+            $scope.showLoader=true;
+            grPortalService.getDocsOfUser($scope.currentUser.id).then(
+                function (res) {
+                    if(res.status!=200){
+                        alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+                    else{
+                        res.data.forEach(function(f){
+                        if(f.active){
+                            $scope.currentUserDocs.push(f);
+                        }
+                    });    
                 }
-            },
-            function(){alert($scope.titles[$scope.lang][83]);}
-        );
-        $timeout(function () { $scope.showLoader=false; }, 300);
+            });
+        
+            var q = '{"client.id":'+$scope.currentUser.id+',"sent":""}';
+            grPortalService.getFacteurs(q).then(
+                function(res){
+                    if(res.status!=200){alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+                    else{
+                        $scope.pendingPurchases = res.data;
+                    }
+                },
+                function(){alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+            );
+            $timeout(function () { $scope.showLoader=false; }, 300);
+        }
     }
 
 /* --------------------------------------------------------------------------- */
@@ -498,7 +488,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
             grPortalService.getFacteurs('{}').then(
                 function successCallback(response) {
                     if(response.status!=200){
-                        alert($scope.titles[$scope.lang][83]);}
+                        alert($scope.titles.alerts.informationLoad[$scope.lang]);}
                     else{
                         $scope.showLoader = false;
                         $scope.purchasesInfo = response.data;
@@ -517,7 +507,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
             grPortalService.getUsers('{}').then(
                 function successCallback(response) {
                     if(response.status!=200){
-                        alert($scope.titles[$scope.lang][83]);}
+                        alert($scope.titles.alerts.informationLoad[$scope.lang]);}
                     else{
                         $scope.showLoader = false;
                         $scope.userInfo = response.data;
@@ -531,6 +521,25 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
             );
             $timeout(function () { $scope.showLoader=false; }, 300);
         }
+        if(item==2){
+            $scope.showLoader = true;
+            grPortalService.getMessages('{}').then(
+                function successCallback(response) {
+                    if(response.status!=200){
+                        alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+                    else{
+                        $scope.showLoader = false;
+                        $scope.messagesInfo = response.data;
+                        $scope.totalItems = $scope.messagesInfo.length;
+                    }
+                },
+                function errorCallback() {
+                    $scope.messagesInfo = [];
+                    alert('ERROR');
+                }
+            );
+            $timeout(function () { $scope.showLoader=false; }, 300);
+        }
     }
     
 /* --------------------------------------------------------------------------- */
@@ -539,7 +548,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
         grPortalService.getUsers('{"id":'+user.id+'}').then(
             function successCallback(response) {
                 if(response.status!=200){
-                    alert($scope.titles[$scope.lang][83]);}
+                    alert($scope.titles.alerts.informationLoad[$scope.lang]);}
                 else{
                     $scope.showLoader = false; 
                     $scope.thisUserTemp = response.data[0];
@@ -578,14 +587,14 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
     $scope.savePurchaseByAdm = function(){
         grPortalService.updateFacteur($scope.purchaseToShowAdmin).then(
             function(res){
-                if(res.status!=200){ alert($scope.titles[$scope.lang][83]);}
+                if(res.status!=200){ alert($scope.titles.alerts.informationLoad[$scope.lang]);}
                 else{
                     $timeout(function () { $scope.showLoader=false; }, 300);
                     $('#show_info_tea').modal('hide');
                 }
             },
             function(){
-                alert($scope.titles[$scope.lang][83]);
+                alert($scope.titles.alerts.informationLoad[$scope.lang]);
             }
         );
     }
@@ -596,7 +605,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
         grPortalService.getFacteurs('{}').then(
             function successCallback(response) {
                 if(response.status!=200){
-                    alert($scope.titles[$scope.lang][83]);}
+                    alert($scope.titles.alerts.informationLoad[$scope.lang]);}
                 else{
                     $scope.showLoader = false;
                     $scope.purchasesInfo = response.data;
@@ -616,7 +625,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
         grPortalService.updateUserInfo(user).then(
             function successCallback(response) {
                 if(response.status!=200){
-                    alert($scope.titles[$scope.lang][83]);}
+                    alert($scope.titles.alerts.informationLoad[$scope.lang]);}
                 else{
                     $timeout(function () { $scope.showLoader=false; }, 300);
                     $('#show_info_user').modal('hide');
@@ -634,7 +643,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
         grPortalService.getUsers('{}').then(
             function(res){
                 if(res.status!=200){
-                    alert($scope.titles[$scope.lang][83]);}
+                    alert($scope.titles.alerts.informationLoad[$scope.lang]);}
                 else{
                     $timeout(function () { $scope.showLoader=false; }, 300);
                     $scope.userInfo = res.data;
@@ -654,7 +663,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
         grPortalService.getFacteurs('{"client.id":'+userId+'}').then(
             function(res){
                 if(res.status!=200){
-                    alert($scope.titles[$scope.lang][83]);}
+                    alert($scope.titles.alerts.informationLoad[$scope.lang]);}
                 else{
                     $timeout(function () { $scope.showLoader=false; }, 300);
                     $scope.userPurchaseList = res.data;
@@ -666,7 +675,145 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
             }
         );
     }
+
 /* --------------------------------------------------------------------------- */
+    $scope.uploadFile = function(e){
+        var form_data = new FormData();
+        var ext, no=0;
+        $scope.showLoader=true;
+        angular.forEach($scope.files, function(file){
+            form_data.append('file', file);
+            ext = file.name.split(".");
+        });
+        $timeout(function () { $scope.showLoader=false; }, 300);
+
+        $scope.showLoader=true;
+        grPortalService.getDocsOfUser($scope.currentUser.id).then(
+            function (res) {
+                if(res.status!=200){
+                    alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+                else{
+                    $timeout(function () { $scope.showLoader=false; }, 300);
+                    no = res.data.length;
+                }
+            }
+        );
+
+        var name = $scope.currentUser._id.$oid+'_'+no;
+        $scope.showLoader=true;
+        $http.post('php/upload_image.php?name='+name,form_data,{transformRequest:angular.identity,headers:{'Content-Type': undefined,'Process-Data':false}})
+            .then(function(res){
+                if(res.data!='ERR'){
+                    name = name+'.'+res.data;
+                    var doc = {"owner":$scope.currentUser.id, "name":name, "active":true} ;
+                    grPortalService.updateUserDocsInfo(doc,'new').then(
+                        function (response) {
+                            grPortalService.getDocsOfUser($scope.currentUser.id).then(
+                                function (res) {
+                                    $scope.currentUserDocs = res.data;
+                                }
+                            );                                          
+                        }, 
+                        function () {
+                            alert('An error has occurred');
+                        });
+                }
+            });
+        $scope.showLoader=false;
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.removeImageFromProfile = function(image){
+        $scope.showLoader=true;
+        grPortalService.updateUserDocsInfo(image,'delete').then(
+            function(res){
+                if(res.status!=200){
+                    alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+                else{
+                    grPortalService.getDocsOfUser($scope.currentUser.id).then(
+                        function (res) {
+                            if(res.status!=200){
+                                alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+                            else{
+                                $timeout(function () { $scope.showLoader=false; }, 300);
+                                $scope.currentUserDocs = res.data;
+                            }
+                        }
+                    );     
+                }
+            }
+        );
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.contactUsSendMsg = function(){
+        $scope.contactUsFormErrMsg = '';
+        $scope.msgClass = 'errMessage';
+        if(!contactUsForm.phone.value && !contactUsForm.email.value){
+            $scope.contactUsFormErrMsg = $scope.titles.contactUs.phoneRequire[$scope.lang]; 
+        }
+        if(!contactUsForm.name.value){
+            $scope.contactUsFormErrMsg = $scope.titles.contactUs.NameRequire[$scope.lang]; 
+        }
+        if(!contactUsForm.msgTxt.value){
+            $scope.contactUsFormErrMsg = $scope.titles.contactUs.msgTxtRequire[$scope.lang]; 
+        }
+
+        if(!$scope.contactUsFormErrMsg){
+            var d = new Date();
+            var user = $scope.currentUser ? $scope.currentUser.id : '';
+            var msg = {"date":d,"userId":user,"name":contactUsForm.name.value,"phone":contactUsForm.phone.value,"email":contactUsForm.email.value,"msg":contactUsForm.msgTxt.value};
+            grPortalService.saveMessage(msg).then(
+                function(res){
+                    contactUsForm.name.value = '';
+                    contactUsForm.phone.value = '';
+                    contactUsForm.email.value = '';
+                    contactUsForm.msgTxt.value = '';
+                    if(res.status!=200){
+                        alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+                    else{
+                        $scope.contactUsFormErrMsg = '';
+                        showSuccessMsg($scope.titles.contactUs.msgSuccess[$scope.lang]);
+                        $timeout(function() { $('#contactus').modal('hide')}, 1000);;
+                    }
+                }
+            );
+        }
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.sorting_user = function(colSelected){
+        switch (colSelected){
+            case 0: $scope.sortType_user = 'id'; break;
+            case 1: $scope.sortType_user = 'lastname'; break;
+            case 2: $scope.sortType_user = 'special'; break;
+            case 3: $scope.sortType_user = 'active'; break;
+        }
+        
+        $scope.sortReverse_user = !$scope.sortReverse_user;
+        for(var i=0;i<10;i++) $scope.glyphSort_user[i] = '';
+        if(!$scope.sortReverse_user)
+            $scope.glyphSort_user[colSelected] = 'glyphicon glyphicon-sort-by-attributes';
+        else
+            $scope.glyphSort_user[colSelected] = 'glyphicon glyphicon-sort-by-attributes-alt';
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.sorting_message = function(colSelected){
+        switch (colSelected){
+            case 0: $scope.sortType_message = 'date'; break;
+            case 1: $scope.sortType_message = 'name'; break;
+            case 2: $scope.sortType_message = 'phone'; break;
+            case 3: $scope.sortType_message = 'email'; break;
+        }
+        
+        $scope.sortReverse_message = !$scope.sortReverse_message;
+        for(var i=0;i<5;i++) $scope.glyphSort_message[i] = '';
+        if(!$scope.sortReverse_message)
+            $scope.glyphSort_message[colSelected] = 'glyphicon glyphicon-sort-by-attributes';
+        else
+            $scope.glyphSort_message[colSelected] = 'glyphicon glyphicon-sort-by-attributes-alt';
+    }
 
 });
 
@@ -675,3 +822,6 @@ function scrollToAnchor(aid){
     $('html,body').animate({scrollTop: aTag.offset().top},'slow');
 }
 
+function showSuccessMsg(q){
+    $('.alarmMsg').text(q).css({'top':50}).show().delay(2500).hide(500);
+}

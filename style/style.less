@@ -45,6 +45,20 @@ body{
         }
     }
 
+    .alarmMsg{
+        color: white;
+        position: absolute;
+        left: 0;
+        padding: .6em;
+        background-color: rgba(4, 82, 12, 0.85);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-left: none;
+        font-size: 1.2em;
+        box-shadow: 0 0 10px #999;
+        display: none;
+    }
+
     .switch {
         position: relative;
         display: inline-block;
@@ -147,7 +161,10 @@ body{
     color: red;
     margin-left: .5rem;
 }
-
+.successMessage{
+    color: @weed-color-hybrid;
+    margin-left: 3rem;
+}
 #loginModal, #subscribeModal{
     h5, input{
         font-family:"Crete Round";
@@ -733,6 +750,30 @@ header{
     }
 }
 
+#faq{
+    h1, h3{
+        font-family:"Crete Round";
+    }
+    .modal-body{
+        padding: 1em 2em;
+        ul{
+            margin-left: 1em;
+            li{
+                margin-bottom: 1.6em;
+                line-height: 1.3;
+                .bold{
+                    font-weight: bold;
+                    color: @weed-color-hybrid;
+                }
+            }
+            ol{
+                margin-left: 2em;
+                margin-top: .5em;
+            }
+        }
+    }
+}
+
 .section1{
     &>.row{
         display: flex;
@@ -942,7 +983,7 @@ header{
             p{
                 font-weight: 700;
                 text-align: center;
-                font-size: 4rem;        
+                font-size: 3.5rem;        
                 line-height: 1;
                 font-family: "Crete Round";
                 &:nth-child(3){
@@ -962,6 +1003,11 @@ header{
                     font-size: 2rem;
                 }    
                 &:nth-child(7){
+                    font-weight: 400;
+                    text-align: center;
+                    font-size: 1.75rem;
+                }     
+                &:nth-child(8){
                     font-weight: 400;
                     text-align: center;
                     font-size: 1.75rem;
@@ -1540,6 +1586,27 @@ footer{
 
 }
 
+/** -------- contact us footer -------------------------------------------------------------- */
+#contactus{
+    .modal-header{
+        h3{
+            text-transform: capitalize;
+        }
+    }
+    .modal-body{
+        form{
+            textarea{
+                max-width: 100%;
+                min-width: 50%;
+                max-height: 8.25em;
+            }
+        }
+    }
+    .errMessage{
+        margin-left: 3em;
+    }
+}
+
 /** -------- Tablet landscape -------------------------------------------------------------- */
 @media screen and (min-width: @md-size) and (max-width: @lg-size) and (orientation: landscape){
     #teaOnlyToShowModal{
@@ -1605,6 +1672,14 @@ footer{
                                 font-size: 1.5em;
                             }
                         }
+                        .addBasket{
+                            form{
+                                .total{
+                                    display: block;
+                                    margin-top: 3px;
+                                }
+                            }
+                        }
                         .charts{
                             .nav-tabs{
                                 li{
@@ -1623,7 +1698,7 @@ footer{
     }
 }
 
-/** --------- Tablet portrait -------------------------------------------------------------- */
+/** --------- Mobile & Tablet portrait -------------------------------------------------------------- */
 @media screen and (max-width: @md-size) and (orientation: portrait){
     #productModal{
         .modal-dialog{
@@ -1695,7 +1770,7 @@ footer{
 }
 
 
-@media screen and (max-width: @md-size){
+@media screen and (max-width: @md-size) and (orientation: portrait){
     .section2{
         .row{
             .col-sm-4{
@@ -2014,6 +2089,6 @@ footer{
         }
     }
 
-    
+
 }
 

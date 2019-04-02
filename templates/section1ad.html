@@ -2,6 +2,7 @@
     <div class="row head">
         <div class="col-sm-4 col-md-4 col-lg-4"><a ng-class="admin_head_class[0]" ng-click="admin_head_clicked(0)">{{titles.section1Ad.orders[lang]}}</a></div>
         <div class="col-sm-4 col-md-4 col-lg-4"><a ng-class="admin_head_class[1]" ng-click="admin_head_clicked(1)">{{titles.section1Ad.userProfiles[lang]}}</a></div>
+        <div class="col-sm-4 col-md-4 col-lg-4"><a ng-class="admin_head_class[2]" ng-click="admin_head_clicked(2)">{{titles.section1Ad.messages[lang]}}</a></div>
     </div>
 
     <div class="row body tea" ng-if="admin_head_class[0]">
@@ -209,7 +210,6 @@
             </div>
         </div>
 
-
 <!-- ----------------------------------------------------------------------------------------- -->        
         <div class="modal fade" id="show_purchase_list" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -328,7 +328,54 @@
             </div>
         </div>
     </div>
-
+<!-- ----------------------------------------------------------------------------------------------- -->
+    <div class="container user-profiles" ng-if="admin_head_class[2]">
+		<div class="col-xs-12">
+			<table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th><input type="text" class="form-control" ng-change="currentPage_message=1" ng-model="cName" value=""></th>
+                        <th><input type="text" class="form-control" ng-change="currentPage_message=1" ng-model="cPhone" value=""></th>
+                        <th><input type="text" class="form-control" ng-change="currentPage_message=1" ng-model="cEmail" value=""></th>
+                        <th><button ng-click="dataRefresh_user()" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button></th>
+                    </tr>
+                    <tr>
+                        <th ng-click="sorting_message(0)">Date <span class="{{glyphSort_message[0]}}"></span></th>
+                        <th ng-click="sorting_message(1)">{{titles.section1Ad.name[lang]}} <span class="{{glyphSort_message[1]}}"></span></th>
+                        <th ng-click="sorting_message(2)">{{titles.section1Ad.phoneNo[lang]}} <span class="{{glyphSort_message[2]}}"></span></th>
+                        <th ng-click="sorting_message(3)">{{titles.section1Ad.email[lang]}} <span class="{{glyphSort_message[3]}}"></span></th>
+                        <th>{{titles.section1Ad.message[lang]}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in filtered = (messagesInfo | orderBy:sortType_message:sortReverse_message
+                                                                    | filter:{date:cDate}
+                                                                    | filter:{name:cName}
+                                                                    | filter:{phone:cPhone}
+                                                                    | filter:{email:cEmail}
+                                                    ) | startFrom: (currentPage_message-1)*pageSize_message | limitTo: pageSize_message">
+                        <td>{{item.date|date:'longDate'}}</td>
+                        <td>{{item.name}}<p ng-if="item.userId">(id:{{item.userId}})</p></td>
+                        <td>{{item.phone}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.msg}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="footer row">
+            <div class="col-xs-2 col-sm-2">
+                <select ng-model="pageSize_orders">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="99999">{{titles.section1Ad.all[lang]}}</option>
+                </select>
+            </div>
+            <div class="col-xs-7 col-sm-6">
+                <ul uib-pagination total-items="filtered.length" items-per-page="pageSize_orders" ng-model="currentPage_user" max-size="maxSize" class="pagination-md" boundary-link-numbers="true" rotate="false"></ul>
+            </div>
+        </div>
 <!-- ========== PRINT TEA FACTEUR ========== -->
     
 

@@ -180,6 +180,24 @@ app.service('grPortalService', function($http, $q) {
             });
             return request.then( function(response){return response;}, function(response){return response;} );
         },
+        saveMessage: function(msg){
+            url = 'https://api.mlab.com/api/1/databases/greenportal/collections/messages?apiKey='+dbApiKey;
+            var request = $http({
+                method: "post",
+                url: url,
+                data: JSON.stringify(msg),
+                headers: { "Content-Type": "application/json; charset=utf8" }
+            });
+            return request.then( function(response){return response;}, function(response){return response;} );
+        },
+        getMessages: function(filter){
+            var url = 'https://api.mlab.com/api/1/databases/greenportal/collections/messages?q='+filter+'&apiKey='+dbApiKey;
+            var request = $http({
+                method: "get",
+                url: url
+            });
+            return request.then( function(response){return response;}, function(){return;} );
+        },
 
     });
 });

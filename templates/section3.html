@@ -14,28 +14,3 @@
         </span>
     </div>
 </section>
-
-
-<!--
-    <section class="container section3" id="section3">
-    <h2>{{titles[7].item[lang]}}</h2>
-    <div class="row">
-        <p ng-if="filtered"><a ng-click="removeFilter()"><i class="fa fa-times" aria-hidden="true"></i></a> {{titles[46].item[lang]}}: <em>{{filtered|uppercase}}</em></p>
-        <span ng-repeat="tea in tempTeaModels track by $index">
-            <span ng-if="$index < itemsToShowCount && (showTeaGroup==tea.parentGrpId || showTeaGroup==0)">
-                <div id="{{'grp'+tea.parentGrpId}}" class="col-xs-4 col-sm-3 col-md-5" data-toggle="modal" data-target="#productModal" ng-click="showThisProduct(tea)">
-                    <div class="image">
-                        <img ng-src="images/{{tea.image}}">
-                    </div>
-                    <h3>{{tea.title}}</h3>
-                    <p><em>{{tea.price|number:2}}$</em> /100gr</p> 
-                </div>
-            </span>
-        </span>
-    </div>
-    <div class="loadMore" ng-click="loadMore()" ng-if="itemsToShowCount<tempTeaModels.length">
-        <p>{{titles[35].item[lang]}}</p>
-        <i class="fa fa-angle-double-down" aria-hidden="true"></i>
-    </div>
-</section>
--->

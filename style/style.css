@@ -25,6 +25,19 @@ body #showUser {
 body #showUser .modal-body p .cp {
   text-transform: uppercase;
 }
+body .alarmMsg {
+  color: white;
+  position: absolute;
+  left: 0;
+  padding: .6em;
+  background-color: rgba(4, 82, 12, 0.85);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-left: none;
+  font-size: 1.2em;
+  box-shadow: 0 0 10px #999;
+  display: none;
+}
 body .switch {
   position: relative;
   display: inline-block;
@@ -121,6 +134,10 @@ body .lds-ring div:nth-child(3) {
 .errMessage {
   color: red;
   margin-left: .5rem;
+}
+.successMessage {
+  color: #04520c;
+  margin-left: 3rem;
 }
 #loginModal h5,
 #subscribeModal h5,
@@ -609,6 +626,28 @@ header nav #navbar_logged ul li a:hover .badge {
 .link-bar1 .row ul li:last-child a {
   border-right: 0;
 }
+#faq h1,
+#faq h3 {
+  font-family: "Crete Round";
+}
+#faq .modal-body {
+  padding: 1em 2em;
+}
+#faq .modal-body ul {
+  margin-left: 1em;
+}
+#faq .modal-body ul li {
+  margin-bottom: 1.6em;
+  line-height: 1.3;
+}
+#faq .modal-body ul li .bold {
+  font-weight: bold;
+  color: #04520c;
+}
+#faq .modal-body ul ol {
+  margin-left: 2em;
+  margin-top: .5em;
+}
 .section1 > .row {
   display: flex;
 }
@@ -812,7 +851,7 @@ header nav #navbar_logged ul li a:hover .badge {
 .section4 .row .operation p {
   font-weight: 700;
   text-align: center;
-  font-size: 4rem;
+  font-size: 3.5rem;
   line-height: 1;
   font-family: "Crete Round";
 }
@@ -833,6 +872,11 @@ header nav #navbar_logged ul li a:hover .badge {
   font-size: 2rem;
 }
 .section4 .row .operation p:nth-child(7) {
+  font-weight: 400;
+  text-align: center;
+  font-size: 1.75rem;
+}
+.section4 .row .operation p:nth-child(8) {
   font-weight: 400;
   text-align: center;
   font-size: 1.75rem;
@@ -1267,6 +1311,18 @@ footer p {
 .section1ad #basketModal .modal-body tbody {
   font-size: .8em;
 }
+/** -------- contact us footer -------------------------------------------------------------- */
+#contactus .modal-header h3 {
+  text-transform: capitalize;
+}
+#contactus .modal-body form textarea {
+  max-width: 100%;
+  min-width: 50%;
+  max-height: 8.25em;
+}
+#contactus .errMessage {
+  margin-left: 3em;
+}
 /** -------- Tablet landscape -------------------------------------------------------------- */
 @media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
   #teaOnlyToShowModal {
@@ -1301,13 +1357,17 @@ footer p {
   #productModal .modal-dialog .modal-content .modal-body .right .rating i {
     font-size: 1.5em;
   }
+  #productModal .modal-dialog .modal-content .modal-body .right .addBasket form .total {
+    display: block;
+    margin-top: 3px;
+  }
   #productModal .modal-dialog .modal-content .modal-body .right .charts .nav-tabs li a {
     font-size: .85em;
     padding-left: 10px;
     padding-right: 10px;
   }
 }
-/** --------- Tablet portrait -------------------------------------------------------------- */
+/** --------- Mobile & Tablet portrait -------------------------------------------------------------- */
 @media screen and (max-width: 768px) and (orientation: portrait) {
   #productModal .modal-dialog {
     width: 80%;
@@ -1350,7 +1410,7 @@ footer p {
     margin-bottom: 0;
   }
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) and (orientation: portrait) {
   .section2 .row .col-sm-4:nth-child(2) div p {
     font-size: 3.25rem;
   }
