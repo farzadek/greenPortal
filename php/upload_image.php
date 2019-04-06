@@ -1,4 +1,5 @@
 <?php
+$name = '';
 if(!empty($_FILES)){
     $name = $_GET['name'];
     $ext = pathinfo($_FILES["file"]["name"])['extension'];
@@ -9,6 +10,7 @@ if(!empty($_FILES)){
     else{
         echo 'ERR';
     }
+    $_FILES = [];
 } else{
     echo 'ERROR from PHP';
 }

@@ -3,7 +3,7 @@ Titles = {
         "teaTypes":["Tea types information is not loaded correctly!","Les informations sur les types de thé ne sont pas chargées correctement!"], 
         "teaModels":["Tea models information is not loaded correctly!","Les informations sur les models de thé ne sont pas chargées correctement!"], 
         "informationLoad":["The information is not loaded correctly, Refresh the page please!","Les informations ne sont pas chargées correctement, Actualisez la page s'il vous plaît!"], 
-        "userNotFund":["Username or password are not found!","Nom d'utilisateur ou mot de passe ne sont pas trouvés!"], 
+        "userNotFound":["Username or password are not found!","Nom d'utilisateur ou mot de passe ne sont pas trouvés!"], 
         "passwordNotMatch":["Passwords are not match!","Les mots de passe ne correspondent pas!"], 
         "emailExists":["This emial(user) already exists!","Cet email (utilisateur) existe déjà!"], 
         "errorSendEmail":["An error occurred while sending message!","Une erreur est survenue lors de l'envoi du message!"], 
@@ -139,7 +139,8 @@ Titles = {
         "condition3":["condition3","condition3"],
         "proceed":["proceed","procéder"],
         "previous":["previous","precedent"],
-        "profile":["profile","profil"]
+        "profile":["profile","profil"],
+        "uploadMsg":["Identification documents","Documents d'identification"]
     },
     "purchase":{
         "clietInfoTitle":["Client's information","Informations du client"],

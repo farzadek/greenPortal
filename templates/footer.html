@@ -14,41 +14,41 @@
 
 <!-- contact us - MODAL ---------------------------------------------------------------------------------------------------------------- -->    
 <div class="modal fade" id="contactus" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-              <h3>{{titles.contactUs.contact[lang]}}</h3>
-          </div>
-          <div class="modal-body">
-              <div class="alarmMsg"></div>
-              <form name="contactUsForm" novalidate>
-                  <div class="form-group">
-                      <label for="name" class="col-form-label">* {{titles.contactUs.name[lang]}}:</label>
-                      <input type="text" class="form-control" ng-model="name" id="name" required>
-                  </div>
-                  <div class="form-group">
-                      <label for="phone" class="col-form-label">{{titles.contactUs.phone[lang]}}:</label>
-                      <input type="phone" class="form-control" id="phone" ng-model="phone">
-                  </div>
-                  <div class="form-group">
-                      <label for="email" class="col-form-label">{{titles.contactUs.email[lang]}}:</label>
-                      <input type="email" class="form-control" id="email" ng-model="email">
-                  </div>
-                  <div class="aform-group">
-                      <label for="msgTxt" class="col-form-label">* {{titles.contactUs.msgTxt[lang]}}:</label>
-                      <textarea rows="5" class="form-control" id="msgTxt" ng-model="msgTxt" required></textarea>
-                  </div>
-              </form>
-          </div>
-          <div class="modal-footer">
-              <button type="button" ng-click="contactUsSendMsg()" class="btn btn-primary">{{titles.contactUs.send[lang]}}</button>
-          </div>
-          <p class="errMessage">{{contactUsFormErrMsg}}</p>
-      </div>
-  </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3>{{titles.contactUs.contact[lang]}}</h3>
+            </div>
+            <div class="modal-body">
+                <div class="alarmMsg"></div>
+                <form name="contactUsForm" novalidate>
+                    <div class="form-group">
+                        <label for="name" class="col-form-label">* {{titles.contactUs.name[lang]}}:</label>
+                        <input type="text" class="form-control" ng-model="name" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="col-form-label">{{titles.contactUs.phone[lang]}}:</label>
+                        <input type="phone" class="form-control" id="phone" ng-model="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-form-label">{{titles.contactUs.email[lang]}}:</label>
+                        <input type="email" class="form-control" id="email" ng-model="email">
+                    </div>
+                    <div class="aform-group">
+                        <label for="msgTxt" class="col-form-label">* {{titles.contactUs.msgTxt[lang]}}:</label>
+                        <textarea rows="5" class="form-control" id="msgTxt" ng-model="msgTxt" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="contactUsSendMsg()" class="btn btn-primary">{{titles.contactUs.send[lang]}}</button>
+            </div>
+            <p class="errMessage">{{contactUsFormErrMsg}}</p>
+        </div>
+    </div>
 </div>
 
 <!-- LOGIN-MODAL ---------------------------------------------------------------------------------------------------------------- -->    

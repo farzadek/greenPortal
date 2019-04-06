@@ -173,6 +173,9 @@ body .lds-ring div:nth-child(3) {
 #userProfileModal .modal-body .tab-content form > button {
   margin-top: 1em;
 }
+#userProfileModal .modal-body .tab-content form input.ng-invalid {
+  border-color: red;
+}
 #userProfileModal .modal-body .tab-content #membership form button {
   float: right;
   margin-right: 2.5em;
@@ -239,6 +242,10 @@ body .lds-ring div:nth-child(3) {
 #userProfileModal .modal-body .tab-content #membership .docs > div a i {
   font-size: 2em;
   margin-left: .125em;
+}
+#userProfileModal .modal-body .tab-content #membership .docs > div a.preview-image {
+  position: relative;
+  display: contents;
 }
 #userProfileModal .modal-body .tab-content #membership .docs > div img {
   width: 100%;
@@ -373,6 +380,13 @@ body .lds-ring div:nth-child(3) {
 }
 #productModal .modal-dialog .modal-content .modal-body .right .charts {
   margin-top: 1.25em;
+}
+#productModal .modal-dialog .modal-content .modal-body .right .charts .tab-content {
+  padding: .5em .25em;
+}
+#productModal .modal-dialog .modal-content .modal-body .right .charts .tab-content p {
+  line-height: 1.15;
+  font-size: .85em;
 }
 #productModal .modal-dialog .modal-content .modal-body .right .charts .progress {
   margin-bottom: 1px;
@@ -578,6 +592,10 @@ header nav #navbar ul li:last-child,
 header nav #navbar_logged ul li:last-child {
   font-size: 1.3rem;
   margin-top: 1.5rem;
+}
+header nav #navbar ul li.name-user,
+header nav #navbar_logged ul li.name-user {
+  margin-left: 15px;
 }
 header nav #navbar ul li a,
 header nav #navbar_logged ul li a {
@@ -953,14 +971,6 @@ footer p {
 }
 .section1s .row .col-sm-4:nth-child(2) .image {
   background-color: #04520c;
-  /*
-                    background:@weed-color2;
-                    background: -moz-linear-gradient(left, @weed-color2 50%, @weed-color1 50%);
-                    background: -webkit-linear-gradient(left, @weed-color2 50%,@weed-color1 50%);
-                    background: linear-gradient(to right, @weed-color2 50%,@weed-color1 50%);
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=@weed-color2, endColorstr=@weed-color1,GradientType=1 );                
-                    */
-
 }
 .section1s .row .col-sm-4:nth-child(3) .image {
   background-color: #260031;
@@ -980,11 +990,6 @@ footer p {
   text-align: center;
   font-family: "Crete Round";
   margin-top: 5px;
-}
-.section2s {
-  /*    @weed-color1: #009F00;
-    @weed-color2: #FF69B4;*/
-
 }
 .section2s h2 {
   text-align: center;
@@ -1011,13 +1016,6 @@ footer p {
 }
 .section2s .row .col-xs-6 > div.bk-hybrid {
   background-color: #04520c;
-  /*
-                    background: -moz-linear-gradient(left, @weed-color2 50%, @weed-color1 50%);
-                    background: -webkit-linear-gradient(left, @weed-color2 50%,@weed-color1 50%);
-                    background: linear-gradient(to right, @weed-color2 50%,@weed-color1 50%);
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=@weed-color2, endColorstr=@weed-color1,GradientType=1 );                
-                    */
-
 }
 .section2s .row .col-xs-6 > div:hover {
   opacity: .6;
@@ -1472,13 +1470,13 @@ footer p {
     display: block;
   }
   .section2 .row .col-sm-4 div i {
-    font-size: 5.5rem;
+    font-size: 4.5rem;
   }
   .section2 .row .col-sm-4 div p {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
   }
   .section2 .row .col-sm-4 div p span {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
   .section3 h2 {
     font-size: 2.1em;

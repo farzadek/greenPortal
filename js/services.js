@@ -50,7 +50,7 @@ app.service('grPortalService', function($http, $q) {
             return request.then( function(response){return response;}, function(){return 'err';} );
         },
         sendEmail: function(receiver, message){
-            url = 'php/send_email.php';
+            url = 'php/send_msg_email.php';
             var request = $http({
                 method: "post",
                 url: url,

@@ -677,48 +677,46 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
     }
 
 /* --------------------------------------------------------------------------- */
-    $scope.uploadFile = function(e){
+    $scope.uploadFile = function(){
         var form_data = new FormData();
-        var ext, no=0;
+        var no=0;
         $scope.showLoader=true;
         angular.forEach($scope.files, function(file){
             form_data.append('file', file);
             ext = file.name.split(".");
         });
-        $timeout(function () { $scope.showLoader=false; }, 300);
 
-        $scope.showLoader=true;
         grPortalService.getDocsOfUser($scope.currentUser.id).then(
             function (res) {
                 if(res.status!=200){
                     alert($scope.titles.alerts.informationLoad[$scope.lang]);}
                 else{
-                    $timeout(function () { $scope.showLoader=false; }, 300);
                     no = res.data.length;
+                    var name = $scope.currentUser._id.$oid+'_'+no;
+                    $http.post('php/upload_image.php?name='+name,form_data,{transformRequest:angular.identity,headers:{'Content-Type': undefined,'Process-Data':false}})
+                        .then(function(res){
+                            if(res.data!='ERR'){
+                                name = name+'.'+res.data;
+                                var doc = {"owner":$scope.currentUser.id, "name":name, "active":true} ;
+                                grPortalService.updateUserDocsInfo(doc,'new').then(
+                                    function (response) {
+                                        grPortalService.getDocsOfUser($scope.currentUser.id).then(
+                                            function (res) {
+                                                $scope.currentUserDocs = res.data;
+                                            }
+                                        );                                          
+                                    }, 
+                                    function () {
+                                        alert('An error has occurred');
+                                    });
+                            }
+                            $scope.files = '';
+                            document.getElementById('inputFile').value = '';
+                        });                
                 }
             }
         );
 
-        var name = $scope.currentUser._id.$oid+'_'+no;
-        $scope.showLoader=true;
-        $http.post('php/upload_image.php?name='+name,form_data,{transformRequest:angular.identity,headers:{'Content-Type': undefined,'Process-Data':false}})
-            .then(function(res){
-                if(res.data!='ERR'){
-                    name = name+'.'+res.data;
-                    var doc = {"owner":$scope.currentUser.id, "name":name, "active":true} ;
-                    grPortalService.updateUserDocsInfo(doc,'new').then(
-                        function (response) {
-                            grPortalService.getDocsOfUser($scope.currentUser.id).then(
-                                function (res) {
-                                    $scope.currentUserDocs = res.data;
-                                }
-                            );                                          
-                        }, 
-                        function () {
-                            alert('An error has occurred');
-                        });
-                }
-            });
         $scope.showLoader=false;
     }
 
@@ -814,6 +812,21 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
         else
             $scope.glyphSort_message[colSelected] = 'glyphicon glyphicon-sort-by-attributes-alt';
     }
+
+/* --------------------------------------------------------------------------- */
+    $scope.aiderSendEmail = function(txt){
+        var url = "php/send_msg_email.php?msg="+txt;
+        var request = $http({
+            method: "post",
+            url: url,
+            headers: { "Content-Type": "application/json; charset=utf8" }
+        });
+        return request.then( function(response){if(response){console.log(response.data)};}, function(response){return response;} );
+    }
+
+    $scope.$on('modal.hide',function(){
+        console.log("hide");
+    });
 
 });
 

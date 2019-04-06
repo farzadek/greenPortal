@@ -7,11 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <link rel="icon" href="images/logo-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>GreenPortal</title>
-    <script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
@@ -26,14 +27,50 @@
 
     <div ng-if="showLoader" class="lds-ring"><div></div><div></div><div></div><div></div></div>
 
-    <section ng-show="currentUser && currentUser.type==2">
-        <div ng-include="'templates/header_logged.html'"></div>
-        <div ng-include="'templates/section1ad.html'"></div>
-    </section>
-    <section ng-if="!currentUser || currentUser.type==1">
-        <div ng-if="!currentUser" ng-include="'templates/header_notlogged.html'"></div>
-        <div ng-if="currentUser" ng-include="'templates/header_logged.html'"></div>
-    
+    <header>
+        <nav class="navbar navbar-default navbar-static-top navbar-inverse">
+            <div class="container">
+                <a class="basket" ng-click="confirmPurchase()" data-toggle="modal" data-target="#basketModal">
+                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                    <span class="badge">{{basket.items.length}}</span>
+                </a>                
+                <div class="navbar-header">                    
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><img src="images/logo.png"></a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse" aria-expanded="false">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ng-show="purchase.length"><a ng-click="confirmPurchase()" data-toggle="modal" data-target="#basketModal"><i class="fa fa-shopping-basket" aria-hidden="true"></i><span class="badge">{{basket.items.length}}</span></a></li>
+                        <li ng-if="!currentUser"><a data-toggle="modal" data-target="#subscribeModal">{{titles.header.subscribe[lang]}}</a></li>
+                        <li ng-if="!currentUser"><a data-toggle="modal" data-target="#loginModal">{{titles.header.login[lang]}}</a></li>
+                        <li ng-show="basket.items.length" class="basket">
+                            <a ng-click="confirmPurchase()" data-toggle="modal" data-target="#basketModal">
+                                <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                <span class="badge">{{basket.items.length}}</span>
+                            </a>
+                        </li>
+                        <li ng-if="currentUser && currentUser.type==1" class="name-user">{{titles.header.hi[lang]}}<a class="name-user" ng-click="openUserBox()" data-toggle="modal" data-target="#userProfileModal">{{currentUser.name}}</a></li>
+                        <li ng-if="currentUser"><a ng-click="logout()">{{titles.header.logout[lang]}}</a></li>
+                        <li><a ng-click="changeLanguage()">{{titles.header.languages[lang]}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <section>
+        <div ng-if="currentUser.special" class="container link-bar1">
+            <div class="row">
+                <ul>
+                    <li><a ng-click="changeShowSpecialProducts(1)">{{titles.specialLinks.flowers[lang]}}</a></li>
+                    <li><a ng-click="changeShowSpecialProducts(0)">{{titles.specialLinks.teaShop[lang]}}</a></li>
+                </ul>
+            </div>
+        </div>
         <div ng-if="!currentUser.special || (currentUser.special && !showSpecialProducts)" ng-include="'templates/section1.html'"></div>
         <div ng-if="currentUser && currentUser.special && showSpecialProducts" ng-include="'templates/section1s.html'"></div>
     
@@ -45,8 +82,11 @@
     
         <div ng-include="'templates/section4.html'"></div>
     </section>
+    <section ng-if="currentUser && currentUser.type==2">
+        <div ng-include="'templates/section1ad.html'"></div>
+    </section>
     <div ng-include="'templates/footer.html'"></div>
-<p id="send"></p>
+    <p id="send"></p>
 
 <!-- LOGIN-MODAL ---------------------------------------------------------------------------------------------------------------- -->    
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
@@ -208,41 +248,17 @@
                             <div class="grade">{{titles.index.grade[lang]}}: <strong>{{productToShow.grade}}</strong></div>
                             <div class="charts">
                                 <ul class="nav nav-tabs">
-                                    <li class="active" ng-if="productToShow.effects"><a data-toggle="tab" href="#effects">{{titles.productModal.effects[lang]}}</a></li>
-                                    <li ng-if="productToShow.medical"><a data-toggle="tab" href="#medical">{{titles.productModal.medical[lang]}}</a></li>
-                                    <li ng-if="productToShow.negatives"><a data-toggle="tab" href="#negatives">{{titles.productModal.negatives[lang]}}</a></li>
+                                    <li class="active" ng-if="productToShow.effects.length"><a data-toggle="tab" href="#effects">{{titles.productModal.effects[lang]}}</a></li>
+                                    <li ng-if="productToShow.medical.length"><a data-toggle="tab" href="#medical">{{titles.productModal.medical[lang]}}</a></li>
+                                    <li ng-if="productToShow.negatives.length"><a data-toggle="tab" href="#negatives">{{titles.productModal.negatives[lang]}}</a></li>
                                 </ul>
         
                                 <div class="tab-content">   
-                                    <div id="effects" class="tab-pane fadein active" ng-if="productToShow.effects">                             
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
-                                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':productToShow.effects[5]+'%'}">{{productToShow.effects[0]}}
-                                            </div>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
-                                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':productToShow.effects[6]+'%'}">{{productToShow.effects[1]}}
-                                            </div>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
-                                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':productToShow.effects[7]+'%'}">{{productToShow.effects[2]}}
-                                            </div>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
-                                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':productToShow.effects[8]+'%'}">{{productToShow.effects[3]}}
-                                            </div>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
-                                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':productToShow.effects[9]+'%'}">{{productToShow.effects[4]}}
-                                            </div>
-                                        </div>
+                                    <div id="effects" class="tab-pane fadein active" ng-if="productToShow.effects.length">                             
+                                        <p ng-repeat="item in productToShow.effects">{{item}}</p>
                                     </div>
 
-                                    <div id="medical" class="tab-pane fadein" ng-if="productToShow.medical">
+                                    <div id="medical" class="tab-pane fadein" ng-if="productToShow.medical.length">
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
                                                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':productToShow.medical[5]+'%'}">{{productToShow.medical[0]}}
@@ -270,7 +286,7 @@
                                         </div>
                                     </div>
 
-                                    <div id="negatives" class="tab-pane fadein" ng-if="productToShow.negatives">
+                                    <div id="negatives" class="tab-pane fadein" ng-if="productToShow.negatives.length">
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
                                                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" ng-style="{'width':productToShow.negatives[5]+'%'}">{{productToShow.negatives[0]}}
@@ -463,144 +479,156 @@
 </div>
     
 <!-- USER PROFILE-MODAL ---------------------------------------------------------------------------------------------------------------- -->    
-            <div class="modal fade" id="userProfileModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#profile">{{titles.index.profile[lang]}}</a></li>
-                                    <li><a data-toggle="tab" href="#membership">{{titles.index.membership[lang]}}</a></li>
-                                    <li><a data-toggle="tab" href="#purchase">{{titles.index.purchases[lang]}}</a></li>
-                                </ul>
-
-
-                                <div class="tab-content">
-
-                                    <div id="profile" class="tab-pane fade in active">
-                                        <form name="userProfileForm">
-                                            <div class="row">
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6 col-sm-6">
-                                                        <label>{{titles.index.name[lang]}}</label>
-                                                        <input type="text" class="form-control" ng-model="currentUser.name" required>
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-sm-6">
-                                                        <label>{{titles.index.lastname[lang]}}</label>
-                                                        <input type="text" class="form-control"ng-model="currentUser.lastname" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-9 col-sm-9">
-                                                        <label>{{titles.index.address[lang]}}</label>
-                                                        <input type="text" class="form-control" ng-model="currentUser.adress">
-                                                    </div>
-                                                    <div class="form-group col-md-3 col-sm-3">
-                                                        <label>{{titles.index.pCode[lang]}}</label>
-                                                        <input type="text" class="form-control" ng-maxlength="6" ng-pattern="/^[aA-zZ]\d{1}[aA-zZ]\d{1}[aA-zZ]\d{1}$/" ng-model="currentUser.cp">
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6 col-sm-6">
-                                                        <label>{{titles.index.city[lang]}}</label>
-                                                        <input type="text" class="form-control" ng-model="currentUser.city">
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-sm-6">
-                                                        <label>{{titles.index.province[lang]}}</label>
-                                                        <select class="form-control" ng-model="currentUser.province">
-                                                            <option value="Alberta">Alberta</option>
-                                                            <option value="British Columbia">British Columbia</option>
-                                                            <option value="Manitoba">Manitoba</option>
-                                                            <option value="New Brunswick">New Brunswick</option>
-                                                            <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
-                                                            <option value="Northwest Territories">Northwest Territories</option>
-                                                            <option value="Nova Scotia">Nova Scotia</option>
-                                                            <option value="Nunavut">Nunavut</option>
-                                                            <option value="Ontario">Ontario</option>
-                                                            <option value="Prince Edward Island">Prince Edward Island</option>
-                                                            <option value="Quebec">Quebec</option>
-                                                            <option value="Saskatchewan">Saskatchewan</option>
-                                                            <option value="Yukon">Yukon</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-6 col-sm-6">
-                                                        <label class="col-form-label">{{titles.index.phoneNo[lang]}}:</label>
-                                                        <input type="text" class="form-control" ng-pattern="/^\d{3}\d{3}\d{4}$/" ng-model="currentUser.phone">
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6 col-sm-6">
-                                                        <label>{{titles.index.email[lang]}} <sub><em>({{titles.index.username[lang]}})</em></sub></label>
-                                                        <input type="email" class="form-control" ng-model="currentUser.username" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button ng-click="saveUserProfile()" ng-disabled="!userProfileForm.$dirty || userProfileForm.$invalid" class="btn btn-primary">{{titles.index.save[lang]}}</button>
-                                        </form>                            
+<div class="modal fade" id="userProfileModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#profile">{{titles.index.profile[lang]}}</a></li>
+                    <li><a data-toggle="tab" href="#membership">{{titles.index.membership[lang]}}</a></li>
+                    <li><a data-toggle="tab" href="#purchase">{{titles.index.purchases[lang]}}</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="profile" class="tab-pane fade in active">
+                        <form name="userProfileForm">
+                            <div class="row">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6">
+                                        <label>{{titles.index.name[lang]}}</label>
+                                        <input type="text" class="form-control" ng-model="currentUser.name" required>
                                     </div>
-
-                                    <div id="membership" class="tab-pane fade">
-                                        <div class="row">
-                                            <div class="form-group col-md-6 col-sm-6">
-                                                <label>{{titles.index.client[lang]}}</label>
-                                                <input type="file" file-input="files" accept="image/*"/>
-                                            </div>
-                                            <div class="form-group col-md-6 col-sm-6">
-                                                <button ng-disabled="!files" ng-click="uploadFile()" class="btn btn-primary">Upload File</button>
-                                            </div>
-                                        </div>
-                                        
-                                        <form name="userConditionForm">
-                                            <div class="row condition">
-                                                <ul>
-                                                    <li><input type="checkbox" id="checkboxOne" ng-model="currentUser.condition[0]" ng-checked="currentUser.condition[0]"><label for="checkboxOne">{{titles.index.iHave19[lang]}}</label></li>
-                                                    <li><input type="checkbox" id="checkboxTwo" ng-model="currentUser.condition[1]" ng-checked="currentUser.condition[1]"><label for="checkboxTwo">{{titles.index.iAmCitizen[lang]}}</label></li>
-                                                    <li><input type="checkbox" id="checkboxThree" ng-model="currentUser.condition[2]" ng-checked="currentUser.condition[2]"><label for="checkboxThree">{{titles.index.condition3[lang]}}</label></li>
-                                                </ul>
-                                            </div>
-                                            <hr/>
-                                            <div class="row">
-                                                <button ng-click="saveUserConditions()" ng-disabled="!userConditionForm.$dirty" class="btn btn-primary">{{titles.index.save[lang]}}</button>
-                                            </div>
-                                        </form>
-
-                                        <div class="row docs">
-                                            <div class="col-xs-6 col-sm-4" ng-repeat="doc in currentUserDocs" ng-if="doc.active">
-                                                <a ng-click="removeImageFromProfile(doc)"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                <img ng-src="images/docs/{{doc.name}}">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="purchase" class="tab-pane fade">
-                                        <div class="orders" ng-if="pendingPurchases">
-                                            <h4>{{titles.index.pendingPurchase[lang]}}</h4>
-                                            <table class="table">
-                                                <tr>
-                                                    <th>{{titles.index.purchaseDate[lang]}}</th>
-                                                    <th>{{titles.index.payable[lang]}}</th>
-                                                    <th>{{titles.index.payed[lang]}}</th>
-                                                    <th>{{titles.index.send[lang]}}</th>
-                                                </tr>
-                                                <tr ng-repeat="order in pendingPurchases">
-                                                    <td><a ng-click="showFacteur_ToShow(order)" data-toggle="modal" data-target="#teaOnlyToShowModal">{{order.date | date:shortDate}}</a></td>
-                                                    <td>{{order.total[4]|number:2}}$</td>
-                                                    <td><i ng-if="!order.payed" class="fa fa-times" aria-hidden="true"></i>{{order.payed|date:shortDate}}</td>
-                                                    <td><i ng-if="!order.sent" class="fa fa-times" aria-hidden="true"></i>{{order.sent|date:shortDate}}</td>
-                                                </tr>
-                                            </table>
-                                        </div>                                    
+                                    <div class="form-group col-md-6 col-sm-6">
+                                        <label>{{titles.index.lastname[lang]}}</label>
+                                        <input type="text" class="form-control"ng-model="currentUser.lastname" required>
                                     </div>
                                 </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-9 col-sm-9">
+                                        <label>{{titles.index.address[lang]}}</label>
+                                        <input type="text" class="form-control" ng-model="currentUser.adress">
+                                    </div>
+                                    <div class="form-group col-md-3 col-sm-3">
+                                        <label>{{titles.index.pCode[lang]}}</label>
+                                        <input type="text" class="form-control" ng-maxlength="6" ng-pattern="/^[aA-zZ]\d{1}[aA-zZ]\d{1}[aA-zZ]\d{1}$/" ng-model="currentUser.cp">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6">
+                                        <label>{{titles.index.city[lang]}}</label>
+                                        <input type="text" class="form-control" ng-model="currentUser.city">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6">
+                                        <label>{{titles.index.province[lang]}}</label>
+                                        <select class="form-control" ng-model="currentUser.province">
+                                            <option value="Alberta">Alberta</option>
+                                            <option value="British Columbia">British Columbia</option>
+                                            <option value="Manitoba">Manitoba</option>
+                                            <option value="New Brunswick">New Brunswick</option>
+                                            <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                                            <option value="Northwest Territories">Northwest Territories</option>
+                                            <option value="Nova Scotia">Nova Scotia</option>
+                                            <option value="Nunavut">Nunavut</option>
+                                            <option value="Ontario">Ontario</option>
+                                            <option value="Prince Edward Island">Prince Edward Island</option>
+                                            <option value="Quebec">Quebec</option>
+                                            <option value="Saskatchewan">Saskatchewan</option>
+                                            <option value="Yukon">Yukon</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6">
+                                        <label class="col-form-label">{{titles.index.phoneNo[lang]}}:</label>
+                                        <input type="text" class="form-control" ng-pattern="/^\d{3}\d{3}\d{4}$/" ng-model="currentUser.phone">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6">
+                                        <label>{{titles.index.email[lang]}} <sub><em>({{titles.index.username[lang]}})</em></sub></label>
+                                        <input type="email" class="form-control" ng-model="currentUser.username" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button ng-click="saveUserProfile()" ng-disabled="!userProfileForm.$dirty || userProfileForm.$invalid" class="btn btn-primary">{{titles.index.save[lang]}}</button>
+                        </form>                          
+                    </div>
+
+                    <div id="membership" class="tab-pane fade">
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-6">
+                                <label>{{titles.index.uploadMsg[lang]}}</label>
+                                <input type="file" file-input="files" id="inputFile" accept="image/*"/>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-6">
+                                <button ng-disabled="!files" ng-click="uploadFile()" class="btn btn-primary">Upload File</button>
+                            </div>
                         </div>
+                                        
+                        <form name="userConditionForm">
+                            <div class="row condition">
+                                <ul>
+                                    <li><input type="checkbox" id="checkboxOne" ng-model="currentUser.condition[0]" ng-checked="currentUser.condition[0]"><label for="checkboxOne">{{titles.index.iHave19[lang]}}</label></li>
+                                    <li><input type="checkbox" id="checkboxTwo" ng-model="currentUser.condition[1]" ng-checked="currentUser.condition[1]"><label for="checkboxTwo">{{titles.index.iAmCitizen[lang]}}</label></li>
+                                    <li><input type="checkbox" id="checkboxThree" ng-model="currentUser.condition[2]" ng-checked="currentUser.condition[2]"><label for="checkboxThree">{{titles.index.condition3[lang]}}</label></li>
+                                </ul>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <button ng-click="saveUserConditions()" ng-disabled="!userConditionForm.$dirty" class="btn btn-primary">{{titles.index.save[lang]}}</button>
+                            </div>
+                        </form>
+
+                        <div class="row docs">
+                            <div class="col-xs-6 col-sm-4" ng-repeat="doc in currentUserDocs" ng-if="doc.active">
+                                <a ng-click="removeImageFromProfile(doc)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                <a class="preview-image" target="_blank" href="images/docs/{{doc.name}}"><img ng-src="images/docs/{{doc.name}}"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="purchase" class="tab-pane fade">
+                        <div class="orders" ng-if="pendingPurchases">
+                            <h4>{{titles.index.pendingPurchase[lang]}}</h4>
+                            <table class="table">
+                                <tr>
+                                    <th>{{titles.index.purchaseDate[lang]}}</th>
+                                    <th>{{titles.index.payable[lang]}}</th>
+                                    <th>{{titles.index.payed[lang]}}</th>
+                                    <th>{{titles.index.send[lang]}}</th>
+                                </tr>
+                                <tr ng-repeat="order in pendingPurchases">
+                                    <td><a ng-click="showFacteur_ToShow(order)" data-toggle="modal" data-target="#teaOnlyToShowModal">{{order.date | date:shortDate}}</a></td>
+                                    <td>{{order.total[4]|number:2}}$</td>
+                                    <td><i ng-if="!order.payed" class="fa fa-times" aria-hidden="true"></i>{{order.payed|date:shortDate}}</td>
+                                    <td><i ng-if="!order.sent" class="fa fa-times" aria-hidden="true"></i>{{order.sent|date:shortDate}}</td>
+                                </tr>
+                            </table>
+                        </div>                                    
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
+<!-- LOGIN-MODAL ---------------------------------------------------------------------------------------------------------------- -->    
+    <div class="modal fade" id="faq" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{titles.index.login[lang]}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h1>FAQ</h1>
+                </div>
+                <div class="modal-body">
+                    <div ng-include="'templates/faq.html'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="style/style.css" rel="stylesheet">

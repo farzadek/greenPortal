@@ -177,7 +177,7 @@ body{
     input{
         font-size: 1.25em;
         font-weight: 400;
-    }
+    }  
     label{
         font-family: "Noto Serif TC";
         font-size: 1.8rem;
@@ -202,6 +202,10 @@ body{
                 &>button{
                     margin-top: 1em;
                 }
+                input.ng-invalid {
+                    border-color: red;
+
+                }    
             }
             #membership{
                 form{
@@ -281,6 +285,10 @@ body{
                             i{
                                 font-size:2em;
                                 margin-left:.125em;
+                            }
+                            &.preview-image{
+                                position: relative;
+                                display: contents;
                             }
                         }
                         img{
@@ -446,6 +454,13 @@ body{
                     }
                     .charts{
                         margin-top: 1.25em;
+                        .tab-content{
+                            padding: .5em .25em;
+                            p{
+                                line-height: 1.15;
+                                font-size: .85em;
+                            }
+                        }
                         .progress{
                             margin-bottom: 1px;
                             height: 25px;
@@ -695,6 +710,9 @@ header{
                     &:last-child{
                         font-size: 1.3rem;
                         margin-top: 1.5rem;
+                    }
+                    &.name-user{
+                        margin-left: 15px;
                     }
                     a{
                         display: inline;
@@ -1095,13 +1113,6 @@ footer{
             &:nth-child(2){
                 .image{
                     background-color: @weed-color-hybrid;
-                    /*
-                    background:@weed-color2;
-                    background: -moz-linear-gradient(left, @weed-color2 50%, @weed-color1 50%);
-                    background: -webkit-linear-gradient(left, @weed-color2 50%,@weed-color1 50%);
-                    background: linear-gradient(to right, @weed-color2 50%,@weed-color1 50%);
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=@weed-color2, endColorstr=@weed-color1,GradientType=1 );                
-                    */
                 }
             }
             &:nth-child(3){
@@ -1129,8 +1140,6 @@ footer{
     }
 }
 .section2s{
-/*    @weed-color1: #009F00;
-    @weed-color2: #FF69B4;*/
     h2{
         text-align: center;
         font-family: "Crete Round";
@@ -1154,12 +1163,6 @@ footer{
                 }    
                 &.bk-hybrid{
                     background-color: @weed-color-hybrid;
-                    /*
-                    background: -moz-linear-gradient(left, @weed-color2 50%, @weed-color1 50%);
-                    background: -webkit-linear-gradient(left, @weed-color2 50%,@weed-color1 50%);
-                    background: linear-gradient(to right, @weed-color2 50%,@weed-color1 50%);
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=@weed-color2, endColorstr=@weed-color1,GradientType=1 );                
-                    */
                 }    
                 &:hover{
                     opacity: .6;
@@ -1893,12 +1896,12 @@ footer{
             .col-sm-4{
                 div{
                     i{
-                        font-size: 5.5rem;
+                        font-size: 4.5rem;
                     }
                     p{
-                        font-size: 2.5rem;
+                        font-size: 2.25rem;
                         span{
-                            font-size: 1.5rem;
+                            font-size: 1.25rem;
                         }
                     }
                 }
