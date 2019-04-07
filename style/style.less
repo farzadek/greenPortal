@@ -690,6 +690,29 @@ body{
 
 header{
     nav{
+        .container{
+            &>.basket{
+                position: absolute;
+                display: inline-block;
+                color: #9d9d9d;
+                font-size: 1.3em;
+                left: 50%;
+                top: .8em;
+                -webkit-transform: translateX(-50%);
+                transform: translateX(-50%);
+                .badge{
+                    margin-top: -2em;
+                    margin-left: -.5em;
+                }
+                &:hover{
+                    color: white;
+                    .badge{
+                        color: #9d9d9d;
+                        background-color: white;
+                    }    
+                }
+            }
+        }
         .navbar-brand{
             font-weight: 700;
             font-size: 3.75rem; 
@@ -1745,6 +1768,7 @@ footer{
         width: 20%;
         float: left;
     }
+
     .section1{
         .row{
             .type-of-tea{
@@ -1820,9 +1844,16 @@ footer{
     }
 }
 
-@media screen and (max-width: @smd-size){
+
+/* ----- mobile phone - portrait ----- */
+@media screen and (max-width: @smd-size) and (orientation: portrait){
     header{
         nav{
+            .container{
+                &>.basket{
+                    margin-left: 4em;
+                }
+            }
             .navbar-brand{
                 font-size: 3rem; 
             }
@@ -1851,7 +1882,7 @@ footer{
             ul{
                 li{
                     a {
-                        font-size: 1em;
+                        font-size: 1.25em;
                     }
                 }
             }
@@ -1883,9 +1914,22 @@ footer{
             }
         }
         .slogan{
-            margin: 3em 0;
+            margin: 2em 0;
             h2{
-                font-size: 3rem;
+                font-size: 2.8rem;
+            }
+        }
+    }
+
+    .section1s{
+        .row{
+            .col-sm-4{
+                .image{
+                    width: 40%;
+                }
+                h1{
+                    font-size: 1.8em;
+                }
             }
         }
     }
@@ -1909,14 +1953,38 @@ footer{
         }
     }
 
+    .section2s{
+        h2{
+            font-size: 2.75em;
+        }
+        .row{
+            .col-xs-6{
+                &>div{
+                    h3{
+                        font-size: 1.25em;
+                    }
+                }
+            }
+        }
+    }
+
     .section3{
         h2{
-            font-size: 2.1em;
+            font-size: 2em;
         }
         .row{
             .col-md-5{
                 width: 48%;
                 height: 220px;
+            }
+            .col-xs-4{
+                h3{
+                    font-family: "Crete Round";
+                    font-size: 1.1em;
+                }
+                .image{
+                    width: 90%;
+                }
             }
         }
     }
@@ -1982,36 +2050,36 @@ footer{
         }
     }
 
-    #productModal{
-        .modal-dialog{
-            width: 95%;
-        }
-    }
-
     #basketModal{
         .modal-body{
             thead{
-                font-size: 1.05em;
+                font-size: .9em;
                 &:last-child{
-                    font-size: 1.15em;
+                    font-size: 1em;
                     tr{
                         th{
                             &:last-child{
-                                font-size: 1.2em;
+                                font-size: 1em;
                             }
                         }
                     }
                 }
             }
             tbody{
-                font-size: 1.05em;
+                font-size: .9em;
             }
         }
     }
 
     #productModal{
         .modal-dialog{
+            width: 95%;
             .modal-content{
+                .modal-header{
+                    h2{
+                        font-size: 1.75em;
+                    }
+                }                
                 .modal-body{
                     .left{
                         padding-right: .5em;
@@ -2031,11 +2099,11 @@ footer{
                         width: 100%;
                         .rating{
                             i{
-                                font-size: 1.75em;
+                                font-size: 1.5em;
                             }
                         }
                         .grade{
-                            font-size: 1.5em;
+                            font-size: 1.4em;
                         }
                         .addBasket{
                             form{
@@ -2077,7 +2145,7 @@ footer{
                         .descript{
                             ul{
                                 li{
-                                    font-size: 1em;
+                                    font-size: .8em;
                                     margin-top: .5em;
                                     i{
                                         font-size: 1.25em;
@@ -2091,6 +2159,7 @@ footer{
             }
         }
     }
+
 
 
 }
