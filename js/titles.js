@@ -132,7 +132,7 @@ Titles = {
         "province":["province","province"], 
         "purchases":["purchases","achats"],
         "toFinishPurchase1":["To finish your purchase please pay","Pour terminer votre achat, veuillez payer"], 
-        "toFinishPurchase2":["by Interac to email address x@x.com within 2 days.","par Interac à l’adresse courriel x@x.com dans 2 jours."],
+        "toFinishPurchase2":["by Interac to email address info.greenportal@gmail.com within 2 days.","par Interac à l’adresse courriel info.greenportal@gmail.com dans 2 jours."],
         "membership":["membership","adhésion"],
         "iHave19":["I have 19+ years old","J'ai 19+ ans"],
         "iAmCitizen":["I am citizen of Canada","Je suis citoyen du Canada"], 
