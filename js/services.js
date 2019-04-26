@@ -155,6 +155,18 @@ app.service('grPortalService', function($http, $q) {
             });
             return request.then( function(response){return response;}, function(){return;} );
         },
+        getFacteursCount: function () {
+            var url = 'https://api.mlab.com/api/1/databases/greenportal/collections/bill?&apiKey=' + dbApiKey;
+            var request = $http({
+                method: "get",
+                url: url
+            });
+            return request.then(function (response) {
+                return response;
+            }, function () {
+                return;
+            });
+        },
         updateFacteur: function(order){ 
             var p = []; 
             order.products.forEach(

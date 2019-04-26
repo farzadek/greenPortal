@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+    <script>if(typeof angular == 'undefined') {document.write(unescape("%3Cscript src='assets/angular161.js'%3E%3C/script%3E"));}</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.min.js"></script>
@@ -21,6 +22,7 @@
     <script src="js/services.js"></script>
     <script src="js/titles.js"></script>
 </head>
+
 
 <body id="page-top" ng-app="greenPortalApp" ng-controller="mainCtrl">
 
@@ -124,20 +126,24 @@
                 <div class="modal-body">
                     <form name="subscribe_user_form">
                         <div class="form-group">
-                            <label class="col-form-label">{{titles.index.name[lang]}}</label>
-                            <input type="text" class="form-control" ng-model="subscribe_name" required>
+                            <label class="col-form-label">{{titles.index.name[lang]}}*</label>
+                            <input type="text" class="form-control" ng-model="subscribe_name" name="subscribe_name" required 
+                                ng-class="{'errInput':subscribe_user_form.$dirty && subscribe_user_form.subscribe_name.$invalid}">
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label">{{titles.index.lastname[lang]}}</label>
-                            <input type="text" class="form-control" ng-model="subscribe_lastname" required>
+                            <label class="col-form-label">{{titles.index.lastname[lang]}}*</label>
+                            <input type="text" class="form-control" ng-model="subscribe_lastname" name="subscribe_lastname" required 
+                                ng-class="{'errInput':subscribe_user_form.$dirty && subscribe_user_form.subscribe_lastname.$invalid}">
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label">{{titles.index.email[lang]}}</label>
-                            <input type="email" class="form-control" ng-model="subscribe_email" required>
+                            <label class="col-form-label">{{titles.index.email[lang]}}*</label>
+                            <input type="email" class="form-control" ng-model="subscribe_email" name="subscribe_email" required
+                                ng-class="{'errInput':subscribe_user_form.$dirty && subscribe_user_form.subscribe_email.$invalid}">
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label">{{titles.index.password[lang]}}</label>
-                            <input type="password" class="form-control" ng-model="subscribe_psw1" required>
+                            <label class="col-form-label">{{titles.index.password[lang]}}*</label>
+                            <input type="password" class="form-control" ng-model="subscribe_psw1" name="subscribe_psw1" required
+                                ng-class="{'errInput':subscribe_user_form.$dirty && subscribe_user_form.subscribe_psw1.$invalid}">
                         </div>
                         <div class="form-group">
                             <label class="col-form-label">{{titles.index.passwordConfirm[lang]}}</label>
@@ -192,7 +198,7 @@
         </div>
 
 <!-- PRODUCT-MODAL ---------------------------------------------------------------------------------------------------------------- -->    
-        <div class="modal fade" id="productModal" tabindex="-1" role="dialog">
+        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" style="z-index:10002">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -216,7 +222,7 @@
                                             <i class="fa fa-plus-square" aria-hidden="true" ng-click="increaseOrder()"></i>
                                         </div>                                 
                                         <button ng-click="addToBasket(productToShow, selectedProductWeight, order)" ng-disabled="!order" class="btn btn-info">{{titles.index.addToBasket[lang]}} <i class="fa fa-shopping-basket" aria-hidden="true"></i></button>
-                                        <span class="total" ng-if="order">( {{order*productToShow.price[selectedProductWeight].price|number:2}} $)<sub>+TX</sub></span>
+                                        <span class="total" ng-if="order">( {{order*productToShow.price[selectedProductWeight].price|number:2}} $)</span>
                                     </div>
                                 </form>
                             </div>
@@ -287,7 +293,7 @@
 
         
 <!-- purchase basket -MODAL ---------------------------------------------------------------------------------------------------------------- -->    
-        <div class="modal fade" id="basketModal" tabindex="-1" role="dialog" style="z-index:9999">
+        <div class="modal fade" id="basketModal" tabindex="-1" role="dialog" style="z-index:10000">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -321,11 +327,7 @@
                                     <tr>
                                         <th colspan="2">{{titles.index.total[lang]}}</th>
                                         <th colspan="2">{{basket.total | number:2}} $</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">{{titles.index.tax[lang]}}</th>
-                                        <th colspan="2">{{basket.total*0.15 | number:2}} $</th>
-                                    </tr>
+                                   </tr>
                                     <tr>
                                         <th colspan="2">{{titles.index.postCost[lang]}}</th>
                                         <th colspan="2">{{postalPrice | number:2}} $</th>
@@ -349,9 +351,11 @@
                         </div>
                         <!-- step 2 --------------------------------------------------------------------- -->
                         <div class="confirmText" ng-if="purchaseProcessStep==2">
-                            <h4>{{titles.purchase.howPay[lang]}}</h4>
-                            <p>{{titles.purchase.howPayText1[lang]}} <strong>({{basket.subTotal | number:2}} $)</strong> {{titles.purchase.howPayText2[lang]}} <strong>x@x.com</strong></p>
+                            <p>{{titles.purchase.howPayText1[lang]}} <h4><strong>{{basket.subTotal | number:2}} $</h4></strong>
+                                {{titles.purchase.howPayText2[lang]}}</p>
+                            <h4><strong>shop@greenportal.ca</strong></h4>
                             <p>{{titles.purchase.howPayText3[lang]}}</p>
+                            <h4><a data-toggle="modal" data-target="#howToPay">{{titles.purchase.howPay[lang]}}</a></h4>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -364,9 +368,27 @@
                 </div>
             </div>
         </div>
+        
+<!-- FAQ-MODAL ---------------------------------------------------------------------------------------------------------------- -->    
+<div class="modal fade" id="faq" tabindex="-1" role="dialog" style="z-index: 10003">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{titles.index.login[lang]}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h1>FAQ</h1>
+                </div>
+                <div class="modal-body">
+                    <div ng-include="'templates/faq.html'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <!-- facteur only to show - MODAL ---------------------------------------------------------------------------------------------------------------- -->    
-<div class="modal fade" id="teaOnlyToShowModal" tabindex="-1" role="dialog" style="z-index:9999">
+<div class="modal fade" id="teaOnlyToShowModal" tabindex="-1" role="dialog" style="z-index:10000">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -376,9 +398,10 @@
             </div>
             <div class="modal-body">
                 <div>
+                    <p>{{titles.showFacteurModal.date[lang]}}: <strong>{{orderToShow.date}}</strong></p>
+                    <h4>{{titles.purchase.orderNo[lang]}}: <strong>{{orderToShow.cn}}</strong></h4>
                     <table class="table table-striped">
                         <thead>
-                            <tr>{{titles.showFacteurModal.date[lang]}}: <strong>{{orderToShow.date}}</strong></tr>
                             <tr>
                                 <th>{{titles.index.title[lang]}}</th>
                                 <th>{{titles.index.qty[lang]}}</th>
@@ -400,10 +423,6 @@
                                 <th colspan="2">{{orderToShow.total[0] | number:2}} $</th>
                             </tr>
                             <tr>
-                                <th colspan="2">{{titles.index.tax[lang]}}</th>
-                                <th colspan="2">{{orderToShow.total[1] | number:2}} $</th>
-                            </tr>
-                            <tr>
                                 <th colspan="2">{{titles.index.postCost[lang]}}</th>
                                 <th colspan="2">{{orderToShow.total[2] | number:2}} $</th>
                             </tr>
@@ -416,20 +435,20 @@
                                 <th colspan="2">{{orderToShow.total[4] | number:2}} $</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td ng-if="orderToShow.sent">{{titles.showFacteurModal.moneyReceivedDate[lang]}}: {{orderToShow.payed}}</td>
-                            </tr>
-                        </tbody>
                     </table>
-                    <p ng-if="!orderToShow.payed">
-                        {{titles.showFacteurModal.waitMoney[lang]}} <a><i class="fa fa-question-circle" aria-hidden="true"></i> {{titles.showFacteurModal.howTo[lang]}}</a><br/>
-                        {{titles.showFacteurModal.alreadyPaid[lang]}} {{titles.showFacteurModal.contact[lang]}}
-                    </p>
-                    <p ng-if="orderToShow.payed && !orderToShow.sent">{{titles.showFacteurModal.facteurNotSent[lang]}}</p>
-                    <p ng-if="orderToShow.payed && orderToShow.sent">
-                        {{titles.showFacteurModal.sendDate[lang]}}: {{orderToShow.sent}}<br/>
-                        {{titles.showFacteurModal.notReceivedMsg[lang]}} {{titles.showFacteurModal.contact[lang]}}</p>
+                    <div ng-if="!orderToShow.payed">
+                        <p>{{titles.showFacteurModal.waitMoney[lang]}} <a data-toggle="modal" data-target="#howToPay"><i class="fa fa-question-circle" aria-hidden="true"></i> {{titles.showFacteurModal.howTo[lang]}}</a></p>
+                        <p>{{titles.showFacteurModal.alreadyPaid[lang]}} <a data-toggle="modal" data-target="#faq">{{titles.showFacteurModal.readMore[lang]}}</a></p>
+                    </div>
+                    <div ng-if="orderToShow.payed && !orderToShow.sent">
+                        <p>{{titles.showFacteurModal.moneyReceivedDate[lang]}}: {{orderToShow.payed}}</p>
+                        <p>{{titles.showFacteurModal.facteurNotSent[lang]}}</p>
+                    </div>
+                    <div ng-if="orderToShow.payed && orderToShow.sent">
+                        <p>{{titles.showFacteurModal.moneyReceivedDate[lang]}}: {{orderToShow.payed}}</p>
+                        <p>{{titles.showFacteurModal.sendDate[lang]}}: {{orderToShow.sent}}</p>
+                        <p>{{titles.showFacteurModal.notReceivedMsg[lang]}} {{titles.showFacteurModal.contact[lang]}}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -445,12 +464,12 @@
             </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#profile">{{titles.index.profile[lang]}}</a></li>
+                    <li><a data-toggle="tab" href="#profile">{{titles.index.profile[lang]}}</a></li>
                     <li><a data-toggle="tab" href="#membership">{{titles.index.membership[lang]}}</a></li>
-                    <li><a data-toggle="tab" href="#purchase">{{titles.index.purchases[lang]}}</a></li>
+                    <li class="active"><a data-toggle="tab" href="#purchase">{{titles.index.purchases[lang]}}</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div id="profile" class="tab-pane fade in active">
+                    <div id="profile" class="tab-pane fade">
                         <form name="userProfileForm">
                             <div class="row">
                                 <div class="form-row">
@@ -513,16 +532,6 @@
                     </div>
 
                     <div id="membership" class="tab-pane fade">
-                        <div class="row">
-                            <div class="form-group col-md-6 col-sm-6">
-                                <label>{{titles.index.uploadMsg[lang]}}</label>
-                                <input type="file" file-input="files" id="inputFile" accept="image/*"/>
-                            </div>
-                            <div class="form-group col-md-6 col-sm-6">
-                                <button ng-disabled="!files" ng-click="uploadFile()" class="btn btn-primary">Upload File</button>
-                            </div>
-                        </div>
-                                        
                         <form name="userConditionForm">
                             <div class="row condition">
                                 <ul>
@@ -532,34 +541,58 @@
                                 </ul>
                             </div>
                             <hr/>
-                            <div class="row">
-                                <button ng-click="saveUserConditions()" ng-disabled="!userConditionForm.$dirty" class="btn btn-primary">{{titles.index.save[lang]}}</button>
-                            </div>
                         </form>
 
+                        <div class="row">
+                            <div class="form-group col-xs-12">
+                                <h4><strong>{{titles.index.uploadMsg[lang]}}</strong></h4>
+                                {{titles.index.photoMsg[lang]}}
+                            </div>
+                            <div class="form-group col-xs-12">
+                                <input type="file" file-input="files" id="inputFile" accept="image/*" />
+                            </div>
+                            <div class="form-group col-xs-12">
+                                <button ng-disabled="!files" ng-click="uploadFile()" class="btn btn-primary">Upload
+                                    File</button>
+                            </div>
+                        </div>
                         <div class="row docs">
                             <div class="col-xs-6 col-sm-4" ng-repeat="doc in currentUserDocs" ng-if="doc.active">
                                 <a ng-click="removeImageFromProfile(doc)"><i class="fa fa-times" aria-hidden="true"></i></a>
                                 <a class="preview-image" target="_blank" href="images/docs/{{doc.name}}"><img ng-src="images/docs/{{doc.name}}"></a>
                             </div>
                         </div>
+                        <div class="col-xs-12 successMsg" ng-if=" showPhotoSuccesMsg">{{titles.index.photoReceived[lang]}}</div>
+                        <hr/>
+                        <div class="row">
+                            <button ng-click="saveUserConditions()" ng-disabled="!userConditionForm.$dirty"
+                                    class="btn btn-primary">{{titles.index.save[lang]}}</button>
+                        </div>
                     </div>
 
-                    <div id="purchase" class="tab-pane fade">
+                    <div id="purchase" class="tab-pane fade in active">
                         <div class="orders" ng-if="pendingPurchases">
                             <h4>{{titles.index.pendingPurchase[lang]}}</h4>
                             <table class="table">
                                 <tr>
                                     <th>{{titles.index.purchaseDate[lang]}}</th>
+                                    <th>{{titles.purchase.orderNo[lang]}}</th>
                                     <th>{{titles.index.payable[lang]}}</th>
                                     <th>{{titles.index.payed[lang]}}</th>
                                     <th>{{titles.index.send[lang]}}</th>
                                 </tr>
                                 <tr ng-repeat="order in pendingPurchases">
                                     <td><a ng-click="showFacteur_ToShow(order)" data-toggle="modal" data-target="#teaOnlyToShowModal">{{order.date | date:shortDate}}</a></td>
+                                    <td>{{order.cn}}</td>
                                     <td>{{order.total[4]|number:2}}$</td>
-                                    <td><i ng-if="!order.payed" class="fa fa-times" aria-hidden="true"></i>{{order.payed|date:shortDate}}</td>
-                                    <td><i ng-if="!order.sent" class="fa fa-times" aria-hidden="true"></i>{{order.sent|date:shortDate}}</td>
+                                    <td>
+                                        <i ng-if="!order.payed" class="fa fa-square-o" aria-hidden="true"></i>
+                                        <i ng-if="order.payed" class="fa fa-check-square-o" aria-hidden="true" data-toggle="tooltip" title="{{order.payed|date:shortDate}}"></i>
+                                    </td>
+                                    <td>
+                                        <i ng-if="!order.sent" class="fa fa-square-o" aria-hidden="true"></i>
+                                        <i ng-if="order.sent" class="fa fa-check-square-o" aria-hidden="true" data-toggle="tooltip" title="{{order.sent|date:shortDate}}"></i>
+                                    </td>
                                 </tr>
                             </table>
                         </div>                                    
@@ -570,19 +603,58 @@
     </div>
 </div>
 
-<!-- LOGIN-MODAL ---------------------------------------------------------------------------------------------------------------- -->    
-    <div class="modal fade" id="faq" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+
+    <!-- How to pay-MODAL ---------------------------------------------------------------------------------------------------------------- -->
+    <div class="modal fade" id="howToPay" tabindex="-1" role="dialog" style="z-index: 10001">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{titles.index.login[lang]}}</h5>
+                    <h5 class="modal-title">{{titles.purchase.howPay[lang]}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h1>FAQ</h1>
                 </div>
                 <div class="modal-body">
-                    <div ng-include="'templates/faq.html'"></div>
+                    <div ng-if="lang==1">
+                        <p>Pour faire un Virement Interac :</p>
+                        <ol>
+                            <li>Ouvrez une session bancaire sur le site de votre institution financière.</li>
+                            <li>Choisissez l’option Virement Interac dans le menu des virements/paiements.</li>
+                            <li>Créez un destinataire (Greenportal) en entrant notre adresse courriel: <strong>shop@greenportal.ca</strong></li>
+                            <li>Entrez l’information concernant le Virement Interac:
+                                <ul>
+                                    <li>Montant de la facture à payer</li>
+                                    <li>compte débitable</li>
+                                    <li>question de sécurité: inscrivez "ma commande"</li>
+                                    <li>réponse: inscrivez les numéros de votre commande. (ex: si votre numéro de commande est 001234, votre réponse devrait être: 001234)</li>
+                                </ul>
+                            </li>
+                            <li>Suivez les instructions pour valider l’information et envoyer l’ordre de virement.</li>
+                        </ol>
+                        <p>Votre commande sera envoyé sur réception du virement Interac.</p>
+                        <h4><strong>IMPORTANT:</strong> LE VIREMENT INTERAC DOIT ÊTRE ENVOYÉ DANS L'HEURE SUIVANT LA COMMANDE POUR VALIDER CELLE-CI</h4>
+                    </div>
+                    <div ng-if="lang==0">
+                        <p>To make an Interac e-Transfer :</p>
+                        <ol>
+                            <li>Open a banking session on your financial institution's website.</li>
+                            <li>Choose the Interac e-Transfer option from the Transfers / Payments menu.</li>
+                            <li>Create a recipient (Greenportal) by entering our email address:
+                                <strong>shop@greenportal.ca</strong></li>
+                            <li>Enter Interac e-Transfer information:
+                                <ul>
+                                    <li>Amount of the invoice to be paid</li>
+                                    <li>Billable account</li>
+                                    <li>Security question: write "my order"</li>
+                                    <li>Answer: write the number of your order. (ex: if your order number is 001234,
+                                        your answer should be: 001234)</li>
+                                </ul>
+                            </li>
+                            <li>Follow the instructions to validate the information and send the transfer order.</li>
+                        </ol>
+                        <p>Your order will be sent upon receipt of the Interac transfer.</p>
+                        <h4><strong>IMPORTANT:</strong> THE INTERAC TRANSFER MUST BE SENT IN THE TIME FOLLOWING THE ORDER TO VALIDATE IT</h4>
+                    </div>
                 </div>
             </div>
         </div>

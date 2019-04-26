@@ -130,6 +130,8 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
     $scope.purchaseToShowAdmin = []; // temp var, fill when admin click on + on admin page
     $scope.contactUsFormErrMsg = ''; // contact us form, error message
 
+    $scope.showPhotoSuccesMsg = false;
+
     /* ------------------------------------- */
     $scope.showLoader = true;
     if($cookieStore.get('id')){
@@ -365,7 +367,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
         $scope.basket.items.forEach(element => { 
             $scope.basket.total += element.no * element.price;
         });
-        $scope.basket.subTotal = $scope.basket.total>$scope.min_purchase_to_free_send?($scope.basket.total*1.15):($scope.basket.total*1.15+$scope.postalPrice);
+        $scope.basket.subTotal = $scope.basket.total>$scope.min_purchase_to_free_send?$scope.basket.total:($scope.basket.total+$scope.postalPrice);
         $('#productModal').modal('hide');
         $scope.order = 0;
         $timeout(function () { $scope.showLoader=false; }, 300);
@@ -410,22 +412,42 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
                 $scope.facteur.date = (d.getFullYear()+'-'+m+'-'+dy).toString();
                 $scope.facteur.payed = '';
                 $scope.facteur.sent = '';
-                var t = $scope.basket.total>$scope.min_purchase_to_free_send?-$scope.postalPrice:0;
-                $scope.facteur.total = [$scope.basket.total,$scope.basket.total*.15,$scope.postalPrice,t,($scope.basket.total+$scope.basket.total*.15+$scope.postalPrice-t)];
-                grPortalService.saveFacteur($scope.facteur).then( 
-                    function(res){
-                        if(res.status!=200){
-                            alert($scope.titles.alerts.errorSaveData[$scope.lang]);}
-                        else{
-                            $scope.facteur = {};
-                            $('#basketModal').modal('hide');
-                            $scope.confirmStep = 0;
-                            $scope.basket = {"items":[],"total":0,"subtotal":0};
+                $scope.facteur.cn = $scope.currentUser.id + '0';
+                grPortalService.getFacteursCount().then(
+                    function (res) {
+                        if (res.status != 200) {
+                            alert($scope.titles.alerts.errorSaveData[$scope.lang]);
+                        } else {
+                            $scope.facteur.cn += res.data.length+1;
+                            var t = $scope.basket.total > $scope.min_purchase_to_free_send ? -$scope.postalPrice : 0;
+                            $scope.facteur.total = [$scope.basket.total, $scope.basket.total * 0, $scope.postalPrice, t, ($scope.basket.total + $scope.basket.total * 0 + $scope.postalPrice - t)];
+                            grPortalService.saveFacteur($scope.facteur).then(
+                                function (res) {
+                                    if (res.status != 200) {
+                                        alert($scope.titles.alerts.errorSaveData[$scope.lang]);
+                                    } else {
+                                        $scope.facteur = {};
+                                        $('#basketModal').modal('hide');
+                                        $scope.confirmStep = 0;
+                                        $scope.purchaseProcessStep = 0;
+                                        $scope.basket = {
+                                            "items": [],
+                                            "total": 0,
+                                            "subtotal": 0
+                                        };
+                                        $("#userProfileModal").modal("show");
+                                    }
+                                },
+                                function () {
+                                    alert($scope.titles.alerts.errorSaveData[$scope.lang]);
+                                }
+                            );
                         }
                     },
-                    function(){alert($scope.titles.alerts.errorSaveData[$scope.lang]);}
-                );        
-
+                    function () {
+                        alert($scope.titles.alerts.errorSaveData[$scope.lang]);
+                    }
+                );
         }
         $timeout(function () { $scope.showLoader=false; }, 300);
     }
@@ -433,6 +455,13 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
 /* --------------------------------------------------------------------------- */
     $scope.facteurNextStep = function(){
         $scope.purchaseProcessStep++;
+        if (!$scope.currentUser && $scope.purchaseProcessStep==1) {
+            $scope.purchaseProcessStep = 0;
+            $('#basketModal').hide();
+            $('.modal-backdrop').hide();
+            $('#loginModal').modal();
+        }
+
     }
 
 /* --------------------------------------------------------------------------- */
@@ -460,7 +489,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
                 }
             });
         
-            var q = '{"client.id":'+$scope.currentUser.id+',"sent":""}';
+            var q = '{"client.id":'+$scope.currentUser.id+'}';
             grPortalService.getFacteurs(q).then(
                 function(res){
                     if(res.status!=200){alert($scope.titles.alerts.informationLoad[$scope.lang]);}
@@ -679,6 +708,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
 /* --------------------------------------------------------------------------- */
     $scope.uploadFile = function(){
         var form_data = new FormData();
+        $scope.showPhotoSuccesMsg = false;
         var no=0;
         $scope.showLoader=true;
         angular.forEach($scope.files, function(file){
@@ -703,6 +733,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
                                         grPortalService.getDocsOfUser($scope.currentUser.id).then(
                                             function (res) {
                                                 $scope.currentUserDocs = res.data;
+                                                $scope.showPhotoSuccesMsg = true;
                                             }
                                         );                                          
                                     }, 
