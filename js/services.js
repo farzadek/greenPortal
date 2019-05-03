@@ -186,11 +186,23 @@ app.service('grPortalService', function($http, $q) {
                     "date": order.date,
                     "payed": order.payed,
                     "sent": order.sent,
-                    "total": order.total
+                    "total": order.total,
+                    "trackno": order.trackno,
+                    "cn": order.cn
                 }),
                 headers: { "Content-Type": "application/json; charset=utf8" }
             });
             return request.then( function(response){return response;}, function(response){return response;} );
+        },
+        deleteFacteur: function(order){ 
+            url = 'https://api.mlab.com/api/1/databases/greenportal/collections/bill/'+order+'?apiKey='+dbApiKey;
+            var request = $http({
+                method: "delete",
+                url: url,
+                success: function () {return true},
+                error: function (xhr, status, err) {return false} 
+            });
+            return request.then( function(response){return response;}, function(){return;} );
         },
         saveMessage: function(msg){
             url = 'https://api.mlab.com/api/1/databases/greenportal/collections/messages?apiKey='+dbApiKey;

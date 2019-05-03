@@ -12,6 +12,7 @@
                     <tr>
                         <th><input type="text" class="form-control" ng-change="currentPage_orders=1" ng-model="cDate" value=""></th>
                         <th><input type="text" class="form-control" ng-change="currentPage_orders=1" ng-model="cName" value=""></th>
+                        <th><input type="text" class="form-control" ng-change="currentPage_orders=1" ng-model="cCn" value=""></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -19,6 +20,7 @@
                     </tr>
                     <tr>
                         <th ng-click="sorting_weed(0)">{{titles.section1Ad.orderDate[lang]}} <span class="{{glyphSort_weed[0]}}"></span></th>
+                        <th ng-click="sorting_weed(5)">{{titles.purchase.orderNo[lang]}} <span class="{{glyphSort_weed[5]}}"></span></th>
                         <th ng-click="sorting_weed(1)">{{titles.section1Ad.customerName[lang]}} <span class="{{glyphSort_weed[1]}}"></span></th>
                         <th ng-click="sorting_weed(2)">{{titles.section1Ad.total[lang]}} <span class="{{glyphSort_weed[2]}}"></span></th>
                         <th ng-click="sorting_weed(3)">{{titles.section1Ad.moneyReceived[lang]}} <span class="{{glyphSort_weed[3]}}"></span></th>
@@ -30,13 +32,14 @@
                     <tr ng-repeat="item in filtered = (purchasesInfo | orderBy:sortType_weed:sortReverse_weed
                                                                 | filter:{date:cDate}
                                                                 | filter:{client_name:cName}
+                                                                | filter:{cn:cCn}
                                                         ) | startFrom: (currentPage_orders-1)*pageSize_orders | limitTo: pageSize_orders">
-                        
                         <td>{{item.date | date:shortDate}}</td>
+                        <td>{{item.cn}}</td>
                         <td>{{item.client.name}} <i class="fa fa-ellipsis-h clinent-info-adm" aria-hidden="true" ng-click="showClientFullInfo_admin(item.client)" data-toggle="modal" data-target="#showUser"></i></td>
                         <td>{{item.total[4] | number:2}}$</td>
-                        <td><i ng-class="item.confirm.payed?'fa fa-check':'fa fa-times'" aria-hidden="true"></i></td>
-                        <td><i ng-class="item.confirm.sent?'fa fa-check':'fa fa-times'" aria-hidden="true"></i></td>
+                        <td><i ng-class="item.payed?'fa fa-check':'fa fa-times'" aria-hidden="true"></i></td>
+                        <td><i ng-class="item.sent?'fa fa-check':'fa fa-times'" aria-hidden="true"></i></td>
                         <td class="last_col">
                             <div>
                                 <span ng-click="full_show_purchase(item)" data-toggle="modal" data-target="#show_info_tea" class="glyphicon glyphicon glyphicon-zoom-in"></span>
@@ -57,6 +60,7 @@
             <div class="col-xs-7 col-sm-6">
                 <ul uib-pagination total-items="filtered.length" items-per-page="pageSize_orders" ng-model="currentPage_orders" max-size="maxSize" class="pagination-md" boundary-link-numbers="true" rotate="false"></ul>
             </div>
+            <button class="btn btn-danger" data-toggle="tooltip" title="{{titles.section1Ad.deletePending3days[lang]}}" ng-click="deletePendingPurchaseByAdm()">{{titles.section1Ad.deletePending[lang]}}</button>
         </div>
         
         
@@ -70,18 +74,28 @@
                             </div>
                             <div class="modal-body">
                                 <form name="tea_facteur">
-                                    <article class="row">
-                                        <div class="form-group col-xs-8">
-                                            <label class="col-form-label">{{titles.section1Ad.orderDate[lang]}}</label>
-                                            <input type="text"class="form-control" ng-model="purchaseToShowAdmin.date" readonly>
-                                        </div>
-                                        <div class="form-group col-xs-6">
-                                            <label class="col-form-label">{{titles.section1Ad.moneyReceived[lang]}}</label>
-                                            <input type="date" placeholder="YYYY-mm-dd" class="form-control" ng-model="purchaseToShowAdmin.payed">
-                                        </div>
-                                        <div class="form-group col-xs-6">
-                                            <label class="col-form-label">{{titles.section1Ad.orderSent[lang]}}</label>
-                                            <input type="date"  placeholder="YYYY-mm-dd" class="form-control" ng-model="purchaseToShowAdmin.sent">
+                                    <article>
+                                        <div class="row">
+                                            <div class="form-group col-xs-6">
+                                                <label class="col-form-label">{{titles.purchase.orderNo[lang]}}</label>
+                                                <input type="text" class="form-control" ng-model="purchaseToShowAdmin.cn">
+                                            </div>
+                                            <div class="form-group col-xs-6">
+                                                <label class="col-form-label">{{titles.section1Ad.orderDate[lang]}}</label>
+                                                <input type="text"class="form-control" ng-model="purchaseToShowAdmin.date" readonly>
+                                            </div>
+                                            <div class="form-group col-xs-6">
+                                                <label class="col-form-label">{{titles.section1Ad.moneyReceived[lang]}}</label>
+                                                <input type="date" placeholder="YYYY-mm-dd" class="form-control" ng-model="purchaseToShowAdmin.payed">
+                                            </div>
+                                            <div class="form-group col-xs-6">
+                                                <label class="col-form-label">{{titles.section1Ad.orderSent[lang]}}</label>
+                                                <input type="date"  placeholder="YYYY-mm-dd" class="form-control" ng-model="purchaseToShowAdmin.sent">
+                                            </div>
+                                            <div class="form-group col-xs-6">
+                                                <label class="col-form-label">{{titles.section1Ad.trackNo[lang]}}</label>
+                                                <input type="text" class="form-control" ng-model="purchaseToShowAdmin.trackno">
+                                            </div>
                                         </div>
                                     </article>
         
@@ -123,11 +137,6 @@
                                                 </tr>
                                                 <tr>
                                                     <th></th>
-                                                    <th>{{titles.section1Ad.tax[lang]}}</th>
-                                                    <th>{{purchaseToShowAdmin.total[1]|number:2}} $</th>
-                                                </tr>
-                                                <tr>
-                                                    <th></th>
                                                     <th>{{titles.section1Ad.postCost[lang]}}</th>
                                                     <th>{{purchaseToShowAdmin.total[2]|number:2}} $</th>
                                                 </tr>
@@ -146,6 +155,7 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
+                                <button class="btn btn-danger" ng-click="deletePurchaseByAdm(purchaseToShowAdmin._id.$oid)">{{titles.section1Ad.delete[lang]}}</button>
                                 <button class="btn btn-primary" ng- ng-click="printTeaFaceur()"><i class="fa fa-print" aria-hidden="true"></i></button>
                                 <button class="btn btn-primary" ng-disabled="!tea_facteur.$dirty || tea_facteur.$invalid" ng-click="savePurchaseByAdm()">{{titles.section1Ad.save[lang]}}</button>
                             </div>
@@ -255,7 +265,11 @@
                     </div>
                     <div class="modal-body">
                         <form name="userInfo_change">
-                            <div class="form-group col-xs-12">
+                            <div class="form-group col-xs-3">
+                                <label class="col-form-label">ID:</label>
+                                <input type="text" required class="form-control" ng-model="thisUserTemp.id" readonly>
+                            </div>
+                            <div class="form-group col-xs-9">
                                 <label class="col-form-label">{{titles.section1Ad.name[lang]}}</label>
                                 <input type="text" required class="form-control" ng-model="thisUserTemp.name">
                             </div>
@@ -264,12 +278,16 @@
                                 <input type="text" required class="form-control" ng-model="thisUserTemp.lastname" required>
                             </div>
                             <div class="form-group col-xs-12">
-                                <label class="col-form-label">{{titles.section1Ad.email[lang]}}</label>
+                                <label class="col-form-label">{{titles.section1Ad.email[lang]}} <sub><em>({{titles.header.username[lang]}})</em></sub></label>
                                 <input type="text" class="form-control" ng-model="thisUserTemp.username" required>
                             </div>
-                            <div class="form-group col-xs-12">
+                            <div class="form-group col-xs-9">
                                 <label class="col-form-label">{{titles.section1Ad.address[lang]}}</label>
                                 <input type="text" class="form-control" ng-model="thisUserTemp.adress">
+                            </div>
+                            <div class="form-group col-xs-3">
+                                <label class="col-form-label">{{titles.section1Ad.pCode[lang]}}</label>
+                                <input type="text" class="form-control cp" ng-maxlength="6" ng-pattern="/^[aA-zZ]\d{1}[aA-zZ]\d{1}[aA-zZ]\d{1}$/" ng-model="thisUserTemp.cp">
                             </div>
                             <div class="form-group col-sm-6">
                                 <label class="col-form-label">{{titles.section1Ad.city[lang]}}</label>

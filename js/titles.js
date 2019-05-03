@@ -28,6 +28,7 @@ Titles = {
         "termOfUse":["Term of use","Conditions d\'utilisation"],
         "contactUs":["Contact us","Contactez nous"],
         "myAccount":["My account","Mon compte"],
+        "faq":["FAQ","Questions fréquentes"],
         "copyRight":["All right reserved, GreenPortal 2018","Tous droits réservés, GreenPortal 2018"]
     },
     "rightBox":{
@@ -52,7 +53,7 @@ Titles = {
         "dropALine":["Drop us a line","Laissez-nous une ligne"],
         "hoursOperation":["Hours of operation","Heures d\'ouverture"],
         "workingDays":["Monday - Friday : 11 am - 5 pm","lundi - vendredi: 11h à 17h"],
-        "holidays1":["Saturday - Sunday : Closed","Samedi - dimanche: fermé"],
+        "holidays1":["Saturday - Sunday : Closed","Samedi - Dimanche: fermé"],
         "holidays2":["Statutory holidays : closed","Jours fériés: fermé"],
         "send":["send","envoyer"]
     },
@@ -74,6 +75,9 @@ Titles = {
         "credit":["credit","crédit"], 
         "payable":["payable","payable"], 
         "save":["save","sauvegarder"], 
+        "delete":["delete","effacer"], 
+        "deletePending":["Clean the list...","Nettoyer la liste..."], 
+        "deletePending3days":["Delete the pending commands more than 3 days","Supprimer les commandes en attente plus de 3 jours"], 
         "phoneNo":["phone number","numéro de téléphone"], 
         "special":["special","spécial"], 
         "active":["active","active"], 
@@ -90,6 +94,7 @@ Titles = {
         "province":["province","province"], 
         "messages":["Messages","Messages"], 
         "message":["Message","Message"], 
+        "trackNo":["Tracking no.","No. de repérage"], 
     },
     "section2s":{
         "products":["products","produits"], 

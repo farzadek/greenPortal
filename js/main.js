@@ -605,13 +605,58 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
         $scope.purchaseToShowAdmin.products.forEach(
             function(e){
                 $scope.purchaseToShowAdmin.total[0] += e.no*e.price;
-                $scope.purchaseToShowAdmin.total[1] += $scope.purchaseToShowAdmin.total[0]*.15;
+                $scope.purchaseToShowAdmin.total[1] += $scope.purchaseToShowAdmin.total[0]*0;
                 $scope.purchaseToShowAdmin.total[3] = $scope.purchaseToShowAdmin.total[0]>100?-$scope.purchaseToShowAdmin.total[2]:0;
                 $scope.purchaseToShowAdmin.total[4] = $scope.purchaseToShowAdmin.total[0]+$scope.purchaseToShowAdmin.total[1]+$scope.purchaseToShowAdmin.total[2]+$scope.purchaseToShowAdmin.total[3];
             }
         );
     }
 
+/* --------------------------------------------------------------------------- */
+    $scope.deletePurchaseByAdm = function(item){
+        if (confirm('Are you sure you want to delete?')) {
+            grPortalService.deleteFacteur(item).then(
+                function(res){
+                    if(res.status!=200){ alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+                    else{
+                        $timeout(function () { $scope.showLoader=false; }, 300);
+                        $('#show_info_tea').modal('hide');
+                        $scope.dataRefreshPurchase();
+                    }
+                },
+                function(){
+                    alert($scope.titles.alerts.informationLoad[$scope.lang]);
+                }
+            );
+        }
+    }
+/* --------------------------------------------------------------------------- */
+    $scope.deletePendingPurchaseByAdm = function(){
+        var today = new Date();
+        today = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+        $scope.purchasesInfo.forEach(element => { 
+            if(!element.payed){
+                var d1 = new Date(element.date);
+                date2 = Date.UTC(d1.getFullYear(), d1.getMonth(), d1.getDate());
+                if(Math.floor((Math.abs(today-date2)-1)/1000/60/60/24)>2){
+                    grPortalService.deleteFacteur(element._id.$oid).then(
+                        function(res){
+                            if(res.status!=200){ alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+                            else{
+                                $timeout(function () { $scope.showLoader=false; }, 300);
+                                $('#show_info_tea').modal('hide');
+                                $scope.dataRefreshPurchase();
+                            }
+                        },
+                        function(){
+                            alert($scope.titles.alerts.informationLoad[$scope.lang]);
+                        }
+                    );
+                }
+            }
+        });
+        $scope.dataRefreshPurchase();
+    }
 /* --------------------------------------------------------------------------- */
     $scope.savePurchaseByAdm = function(){
         grPortalService.updateFacteur($scope.purchaseToShowAdmin).then(

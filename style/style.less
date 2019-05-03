@@ -5,6 +5,7 @@
 @weed-color-sativa: #882b00;
 @weed-color-indica:  #260031;
 @weed-color-hybrid: #04520c;
+@weed-color-concent: #111111;
 
 @lg-size: 1024px;
 @md-size: 768px;
@@ -444,7 +445,7 @@ body{
                                 margin: .75em auto 0;
                                 display: table;
                                 i{
-                                    font-size: 2em;
+                                    font-size: 2.5em;
                                     cursor: pointer;
                                 }
                                 input{
@@ -464,6 +465,10 @@ body{
                                 font-size: .9em;
                                 color: #888;
                             }
+                        }
+                        button{
+                            margin: 0 auto;
+                            display: block;
                         }
                     }
                     .charts{
@@ -1157,7 +1162,7 @@ footer{
     margin: 2.5em auto 0;
     font-family: "Noto Serif TC";
     .row{
-        .col-sm-4{
+        .col-sm-3{
             margin-bottom: 3em;
             &:nth-child(1){
                 .image{
@@ -1174,10 +1179,15 @@ footer{
                     background-color: @weed-color-indica;
                 }
             }
+            &:nth-child(4){
+                .image{
+                    background-color: @weed-color-concent;
+                }
+            }
             .image{
                 overflow: hidden;
                 border-radius: 50%;
-                width:65%;
+                width:75%;
                 margin: 0 auto;
                 img{
                     padding: 10px;
@@ -1189,6 +1199,7 @@ footer{
                 text-align: center;
                 font-family: "Crete Round";
                 margin-top: 5px;
+                font-size: 2.1em;
             }   
         }        
     }
@@ -1218,6 +1229,9 @@ footer{
                 &.bk-hybrid{
                     background-color: @weed-color-hybrid;
                 }    
+                &.bk-concent{
+                    background-color: @weed-color-concent;
+                }
                 &:hover{
                     opacity: .6;
                 }
@@ -1317,9 +1331,26 @@ footer{
                 }
             }
         }
+        #footer{
+            select{
+                padding: .25em;
+                border-radius: 5px;
+                option{
+                    font-size: .9em;
+                    padding-top: .3em;
+                    padding-bottom: .3em;
+                }
+            }
+            ul{
+                margin-top: 0;
+            }
+        }
     }
-
+    
     .user-profiles{
+        .uib-pagination{
+            margin-top: 0;
+        }
         table{
             thead{
                 tr{
@@ -1374,18 +1405,6 @@ footer{
                 }
             }
         }
-        .footer{
-            select{
-                padding: .25em;
-                border-radius: 5px;
-                margin: 20px 0;
-                option{
-                    font-size: .9em;
-                    padding-top: .3em;
-                    padding-bottom: .3em;
-                }
-            }
-        }
         #show_purchase_list{
             .modal-body{
                 table{
@@ -1404,35 +1423,44 @@ footer{
                 }
             }
         }
-        #show_info_user{
-            .modal-body{
-                display: initial;
-                form{
-                    .col-form-label{
-                        text-transform: capitalize;
+    }
+
+    #show_info_user{
+        .modal-body{
+            display: inline-block;
+            form{
+                .col-form-label{
+                    text-transform: capitalize;
+                    sub{
+                        opacity: .7;
                     }
-                    .docs{
-                        a{
-                            position: relative;
-                            display: inline-block;
-                            img{
-                                width:100px;
-                                max-height:100px;
-                                object-fit: contain;
-                                border-radius: 5px;
-                            }
-                            .removed{
-                                position: absolute;
-                                top: 0;
-                                width: 100%;
-                                height: 100%;
-                                background-color: rgba(240,255,190,.5);
-                                &:after{
-                                    content: "Removed";
-                                    color: black;
-                                    font-size: 1em;
-                                    font-family: "Noto Serif TC";
-                                }
+                }
+                input{
+                    &.cp{
+                        text-transform: uppercase;
+                    }
+                }
+                .docs{
+                    a{
+                        position: relative;
+                        display: inline-block;
+                        img{
+                            width:100px;
+                            max-height:100px;
+                            object-fit: contain;
+                            border-radius: 5px;
+                        }
+                        .removed{
+                            position: absolute;
+                            top: 0;
+                            width: 100%;
+                            height: 100%;
+                            background-color: rgba(240,255,190,.5);
+                            &:after{
+                                content: "Removed";
+                                color: black;
+                                font-size: 1em;
+                                font-family: "Noto Serif TC";
                             }
                         }
                     }
@@ -1499,6 +1527,10 @@ footer{
                         label{
                             text-transform: capitalize;
                         }
+                        .row{
+                            padding-left: 15px;
+                            padding-right: 15px;
+                        }
                     }
                     table{
                         thead{
@@ -1537,6 +1569,11 @@ footer{
                         }
                     }
                 }
+            }
+        }
+        .modal-footer{
+            .btn-danger{
+                float: left;
             }
         }
     }
@@ -2001,13 +2038,13 @@ footer{
 
     .section2s{
         h2{
-            font-size: 2.75em;
+            font-size: 2.5em;
         }
         .row{
             .col-xs-6{
                 &>div{
                     h3{
-                        font-size: 1.25em;
+                        font-size: 1.15em;
                     }
                 }
             }
@@ -2066,6 +2103,24 @@ footer{
                             width: 50%;
                         }
                      }
+                }
+                i{
+                    font-size: 5rem;
+                }
+            }
+        }
+    }
+
+    .section1s{
+        .row{
+            .col-sm-3{
+                .image{
+                    img{
+                        padding: 7px;
+                    }
+                }
+                h1{
+                    font-size: 1.55em;
                 }
             }
         }
@@ -2142,6 +2197,14 @@ footer{
         }
     }
 
+    #faq{
+        font-size: 80%;
+        .modal-body{
+            padding-left: 1em;
+            padding-right: 1em;
+        }
+    }
+
     #productModal{
         .modal-dialog{
             width: 95%;
@@ -2161,7 +2224,7 @@ footer{
                             width: 150px;
                         }
                         p{
-                            font-size: .9em;
+                            font-size: .8em;
                         }
                     }
                     .right{
@@ -2187,7 +2250,7 @@ footer{
                                     margin: .75em auto 0;
                                     display: table;
                                     i{
-                                        font-size: 2em;
+                                        font-size: 2.5em;
                                         cursor: pointer;
                                     }
                                     input{
@@ -2230,7 +2293,123 @@ footer{
             }
         }
     }
-
-
-
 }
+
+    /* ----- mobile phone - portrait ----- */
+    @media screen and (orientation: landscape) and (max-height: @smd-size){
+        .section1{
+            .slogan{
+                margin: 2.5em 0;
+                h2{
+                    font-size: 2.75rem;
+                }
+            }
+            .row{
+                .type-of-tea{
+                    .row{
+                        .col-sm-5{
+                            div{
+                                h3{
+                                    font-size: 1.1em;
+                                }
+                            }
+                        }
+                    }
+                }
+                .shop-by-type{
+                    div{
+                        p{
+                            &:nth-child(1){
+                                font-size: 1rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .section2{
+            .row{
+                .col-sm-4{
+                    div{
+                        i {
+                            font-size: 4rem;
+                        }
+                        p{
+                            font-size: 2rem;
+                            span{
+                                font-size: 1.1em;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .section3{
+            h2{
+                font-size: 3.25rem;
+            }
+            .row{
+                .col-md-5 {
+                   height: 210px;
+                }
+                .col-xs-4{
+                    h3{
+                        font-size: 1.5rem;
+                    }
+                    p{
+                        font-size: .8em;
+                    }
+                }
+            }
+        }
+        .section4{
+            .row{
+                .operation{
+                    i {
+                        font-size: 5rem;
+                    }
+                    p{
+                        font-size: 2.5rem;
+                    }
+                }
+            }
+        }
+        .section2s{
+            h2 {
+                font-size: 2.5em;
+            }
+        }
+        #productModal{
+            .modal-dialog {
+                width: 85%;
+                margin: 0 auto;
+                h2{
+                    font-size: 1.7em;
+                }
+                .modal-content{
+                    .modal-body{
+                        .right{
+                            .rating{
+                                i{
+                                    font-size: 1.5em;
+                                }
+                            }
+                            .grade{
+                                font-size: 1.4em;
+                            }
+                        }
+                        .left{
+                            img {
+                                height: 150px;
+                                width: 150px;
+                            }
+                            p{
+                                font-size: .75em;
+                                line-height: 1.4;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }

@@ -57,7 +57,7 @@
             </div>
         </nav>
     </header>
-    <section>
+    <section ng-if="!currentUser || (currentUser && currentUser.type==1)">
         <div ng-if="currentUser.special" class="container link-bar1">
             <div class="row">
                 <ul>
@@ -221,7 +221,7 @@
                                             <input type="number" readonly ng-model="order">
                                             <i class="fa fa-plus-square" aria-hidden="true" ng-click="increaseOrder()"></i>
                                         </div>                                 
-                                        <button ng-click="addToBasket(productToShow, selectedProductWeight, order)" ng-disabled="!order" class="btn btn-info">{{titles.index.addToBasket[lang]}} <i class="fa fa-shopping-basket" aria-hidden="true"></i></button>
+                                        <button ng-click="addToBasket(productToShow, selectedProductWeight, order)" ng-disabled="!order" class="btn btn-info btn-lg">{{titles.index.addToBasket[lang]}} <i class="fa fa-shopping-basket" aria-hidden="true"></i></button>
                                         <span class="total" ng-if="order">( {{order*productToShow.price[selectedProductWeight].price|number:2}} $)</span>
                                     </div>
                                 </form>
@@ -232,7 +232,7 @@
                                     <li><i class="fa fa-clock-o" aria-hidden="true"></i></i> {{productToShow.time}}</li>
                                 </ul>
                             </div>
-                            <div class="rating" ng-if="productToShow.rate">
+                            <div class="rating" ng-if="productToShow.rate.length">
                                 <i class="fa fa-star" aria-hidden="true" ng-if="productToShow.rate[0]"></i>
                                 <i class="fa fa-star-o" aria-hidden="true" ng-if="!productToShow.rate[0]"></i>
                                 <i class="fa fa-star" aria-hidden="true" ng-if="productToShow.rate[1]"></i>

@@ -373,7 +373,7 @@ body .lds-ring div:nth-child(3) {
   display: table;
 }
 #productModal .modal-dialog .modal-content .modal-body .right .addBasket form .quantity i {
-  font-size: 2em;
+  font-size: 2.5em;
   cursor: pointer;
 }
 #productModal .modal-dialog .modal-content .modal-body .right .addBasket form .quantity input {
@@ -391,6 +391,10 @@ body .lds-ring div:nth-child(3) {
   font-style: italic;
   font-size: .9em;
   color: #888;
+}
+#productModal .modal-dialog .modal-content .modal-body .right .addBasket button {
+  margin: 0 auto;
+  display: block;
 }
 #productModal .modal-dialog .modal-content .modal-body .right .charts {
   margin-top: 1.25em;
@@ -1001,33 +1005,37 @@ footer p {
   margin: 2.5em auto 0;
   font-family: "Noto Serif TC";
 }
-.section1s .row .col-sm-4 {
+.section1s .row .col-sm-3 {
   margin-bottom: 3em;
 }
-.section1s .row .col-sm-4:nth-child(1) .image {
+.section1s .row .col-sm-3:nth-child(1) .image {
   background-color: #882b00;
 }
-.section1s .row .col-sm-4:nth-child(2) .image {
+.section1s .row .col-sm-3:nth-child(2) .image {
   background-color: #04520c;
 }
-.section1s .row .col-sm-4:nth-child(3) .image {
+.section1s .row .col-sm-3:nth-child(3) .image {
   background-color: #260031;
 }
-.section1s .row .col-sm-4 .image {
+.section1s .row .col-sm-3:nth-child(4) .image {
+  background-color: #111111;
+}
+.section1s .row .col-sm-3 .image {
   overflow: hidden;
   border-radius: 50%;
-  width: 65%;
+  width: 75%;
   margin: 0 auto;
 }
-.section1s .row .col-sm-4 .image img {
+.section1s .row .col-sm-3 .image img {
   padding: 10px;
   border-radius: 50%;
   width: 100%;
 }
-.section1s .row .col-sm-4 h1 {
+.section1s .row .col-sm-3 h1 {
   text-align: center;
   font-family: "Crete Round";
   margin-top: 5px;
+  font-size: 2.1em;
 }
 .section2s h2 {
   text-align: center;
@@ -1054,6 +1062,9 @@ footer p {
 }
 .section2s .row .col-xs-6 > div.bk-hybrid {
   background-color: #04520c;
+}
+.section2s .row .col-xs-6 > div.bk-concent {
+  background-color: #111111;
 }
 .section2s .row .col-xs-6 > div:hover {
   opacity: .6;
@@ -1129,6 +1140,18 @@ footer p {
   text-align: left;
   text-transform: capitalize;
 }
+.section1ad .body #footer select {
+  padding: .25em;
+  border-radius: 5px;
+}
+.section1ad .body #footer select option {
+  font-size: .9em;
+  padding-top: .3em;
+  padding-bottom: .3em;
+}
+.section1ad .body #footer ul {
+  margin-top: 0;
+}
 .section1ad .user-profiles table thead tr th {
   text-align: center;
 }
@@ -1169,16 +1192,6 @@ footer p {
 .section1ad .user-profiles table tbody tr td.purchase-list i {
   cursor: pointer;
 }
-.section1ad .user-profiles .footer select {
-  padding: .25em;
-  border-radius: 5px;
-  margin: 20px 0;
-}
-.section1ad .user-profiles .footer select option {
-  font-size: .9em;
-  padding-top: .3em;
-  padding-bottom: .3em;
-}
 .section1ad .user-profiles #show_purchase_list .modal-body table {
   font-size: .9em;
 }
@@ -1189,30 +1202,36 @@ footer p {
 .section1ad .user-profiles #show_purchase_list .modal-body table tbody td {
   padding: 1px 5px;
 }
-.section1ad .user-profiles #show_info_user .modal-body {
-  display: initial;
+.section1ad #show_info_user .modal-body {
+  display: inline-block;
 }
-.section1ad .user-profiles #show_info_user .modal-body form .col-form-label {
+.section1ad #show_info_user .modal-body form .col-form-label {
   text-transform: capitalize;
 }
-.section1ad .user-profiles #show_info_user .modal-body form .docs a {
+.section1ad #show_info_user .modal-body form .col-form-label sub {
+  opacity: .7;
+}
+.section1ad #show_info_user .modal-body form input.cp {
+  text-transform: uppercase;
+}
+.section1ad #show_info_user .modal-body form .docs a {
   position: relative;
   display: inline-block;
 }
-.section1ad .user-profiles #show_info_user .modal-body form .docs a img {
+.section1ad #show_info_user .modal-body form .docs a img {
   width: 100px;
   max-height: 100px;
   object-fit: contain;
   border-radius: 5px;
 }
-.section1ad .user-profiles #show_info_user .modal-body form .docs a .removed {
+.section1ad #show_info_user .modal-body form .docs a .removed {
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(240, 255, 190, 0.5);
 }
-.section1ad .user-profiles #show_info_user .modal-body form .docs a .removed:after {
+.section1ad #show_info_user .modal-body form .docs a .removed:after {
   content: "Removed";
   color: black;
   font-size: 1em;
@@ -1263,6 +1282,10 @@ footer p {
 .section1ad .tea #show_info_tea .modal-body form article label {
   text-transform: capitalize;
 }
+.section1ad .tea #show_info_tea .modal-body form article .row {
+  padding-left: 15px;
+  padding-right: 15px;
+}
 .section1ad .tea #show_info_tea .modal-body form table thead th {
   text-transform: uppercase;
 }
@@ -1286,6 +1309,9 @@ footer p {
   text-transform: capitalize;
   padding-top: 3px;
   padding-bottom: 3px;
+}
+.section1ad .tea .modal-footer .btn-danger {
+  float: left;
 }
 .section1ad .weed thead tr th:nth-child(2) {
   text-align: center;
@@ -1530,10 +1556,10 @@ footer p {
     font-size: 1.25rem;
   }
   .section2s h2 {
-    font-size: 2.75em;
+    font-size: 2.5em;
   }
   .section2s .row .col-xs-6 > div h3 {
-    font-size: 1.25em;
+    font-size: 1.15em;
   }
   .section3 h2 {
     font-size: 2em;
@@ -1578,6 +1604,15 @@ footer p {
     margin: 5px 25%;
     width: 50%;
   }
+  .section4 .row .operation i {
+    font-size: 5rem;
+  }
+  .section1s .row .col-sm-3 .image img {
+    padding: 7px;
+  }
+  .section1s .row .col-sm-3 h1 {
+    font-size: 1.55em;
+  }
   footer {
     margin-top: 5em;
   }
@@ -1621,6 +1656,13 @@ footer p {
   #teaOnlyToShowModal .modal-body table {
     font-size: .65em;
   }
+  #faq {
+    font-size: 80%;
+  }
+  #faq .modal-body {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
   #productModal .modal-dialog {
     width: 95%;
   }
@@ -1637,7 +1679,7 @@ footer p {
     width: 150px;
   }
   #productModal .modal-dialog .modal-content .modal-body .left p {
-    font-size: .9em;
+    font-size: .8em;
   }
   #productModal .modal-dialog .modal-content .modal-body .right {
     padding-right: 1.5em;
@@ -1662,7 +1704,7 @@ footer p {
     display: table;
   }
   #productModal .modal-dialog .modal-content .modal-body .right .addBasket form .quantity i {
-    font-size: 2em;
+    font-size: 2.5em;
     cursor: pointer;
   }
   #productModal .modal-dialog .modal-content .modal-body .right .addBasket form .quantity input {
@@ -1692,5 +1734,71 @@ footer p {
   #productModal .modal-dialog .modal-content .modal-body .right .descript ul li i {
     font-size: 1.25em;
     margin-right: .5em;
+  }
+}
+/* ----- mobile phone - portrait ----- */
+@media screen and (orientation: landscape) and (max-height: 576px) {
+  .section1 .slogan {
+    margin: 2.5em 0;
+  }
+  .section1 .slogan h2 {
+    font-size: 2.75rem;
+  }
+  .section1 .row .type-of-tea .row .col-sm-5 div h3 {
+    font-size: 1.1em;
+  }
+  .section1 .row .shop-by-type div p:nth-child(1) {
+    font-size: 1rem;
+  }
+  .section2 .row .col-sm-4 div i {
+    font-size: 4rem;
+  }
+  .section2 .row .col-sm-4 div p {
+    font-size: 2rem;
+  }
+  .section2 .row .col-sm-4 div p span {
+    font-size: 1.1em;
+  }
+  .section3 h2 {
+    font-size: 3.25rem;
+  }
+  .section3 .row .col-md-5 {
+    height: 210px;
+  }
+  .section3 .row .col-xs-4 h3 {
+    font-size: 1.5rem;
+  }
+  .section3 .row .col-xs-4 p {
+    font-size: .8em;
+  }
+  .section4 .row .operation i {
+    font-size: 5rem;
+  }
+  .section4 .row .operation p {
+    font-size: 2.5rem;
+  }
+  .section2s h2 {
+    font-size: 2.5em;
+  }
+  #productModal .modal-dialog {
+    width: 85%;
+    margin: 0 auto;
+  }
+  #productModal .modal-dialog h2 {
+    font-size: 1.7em;
+  }
+  #productModal .modal-dialog .modal-content .modal-body .right .rating i {
+    font-size: 1.5em;
+  }
+  #productModal .modal-dialog .modal-content .modal-body .right .grade {
+    font-size: 1.4em;
+  }
+  #productModal .modal-dialog .modal-content .modal-body .left img {
+    height: 150px;
+    width: 150px;
+  }
+  #productModal .modal-dialog .modal-content .modal-body .left p {
+    font-size: .75em;
+    line-height: 1.4;
   }
 }
