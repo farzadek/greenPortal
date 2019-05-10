@@ -848,7 +848,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
                     else{
                         $scope.contactUsFormErrMsg = '';
                         showSuccessMsg($scope.titles.contactUs.msgSuccess[$scope.lang]);
-                        $timeout(function() { $('#contactus').modal('hide')}, 1000);;
+                        $timeout(function() { $('#contactus').modal('hide')}, 1000);
                     }
                 }
             );
@@ -900,9 +900,50 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
         return request.then( function(response){if(response){console.log(response.data)};}, function(response){return response;} );
     }
 
-    $scope.$on('modal.hide',function(){
-        console.log("hide");
-    });
+/* --------------------------------------------------------------------------- */
+    $scope.closeModal = function(modal){
+        $(modal).modal('hide');
+    }
+
+/* --------------------------------------------------------------------------- */
+    $scope.sendLinkForLostPassword = function(email){
+        grPortalService.getUsers('{"username":"'+email+'"}').then(
+            function(res){
+                if(res.status!=200 || res.data.length==0){
+                    if($scope.lang==0){
+                        $scope.lostPasswordErrMessage = 'Email is not registered in our system!';
+                    } else {
+                        $scope.lostPasswordErrMessage = 'Email n\'est pas enregistré dans notre système!';
+                    }
+                }
+                else{
+                    var url = "php/retrive_password.php?e="+email+"&c="+res.data[0]._id.$oid;
+                    var request = $http({
+                        method: "post",
+                        url: url,
+                        headers: { "Content-Type": "application/json; charset=utf8" }
+                    });
+                    return request.then( 
+                        function(response){
+                            $scope.lostUsername = '';
+                            if(response && response.data){
+                                if($scope.lang==0){
+                                    $scope.lostPasswordSuccMessage = 'An email sent to your mailbox. Please click on link and recover your password!';
+                                } else {
+                                    $scope.lostPasswordSuccMessage = 'Un email envoyé à votre boite mail. S\'il vous plaît cliquer sur le lien et récupérer votre mot de passe!';
+                                }            
+                                $timeout(function() { $scope.closeModal('#forgotPassModal')}, 5000);
+                            } else {
+                                $scope.lostPasswordErrMessage = $scope.titles.alerts.errorSendEmail[$scope.lang];          
+                                $timeout(function() { $scope.closeModal('#forgotPassModal')}, 5000);
+                            }
+                        },
+                        function(response){ return response; } 
+                    );
+                }
+            });
+
+    }
 
 });
 

@@ -151,6 +151,9 @@ body .lds-ring div:nth-child(3) {
   color: #04520c;
   margin-left: 3rem;
 }
+#forgotPassModal {
+  z-index: 10005;
+}
 #loginModal h5,
 #subscribeModal h5,
 #loginModal input,
@@ -1150,6 +1153,9 @@ footer p {
   padding-bottom: .3em;
 }
 .section1ad .body #footer ul {
+  margin-top: 0;
+}
+.section1ad .user-profiles .uib-pagination {
   margin-top: 0;
 }
 .section1ad .user-profiles table thead tr th {
