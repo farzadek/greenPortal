@@ -469,12 +469,13 @@
                         <p>{{titles.showFacteurModal.alreadyPaid[lang]}} <a data-toggle="modal" data-target="#faq">{{titles.showFacteurModal.readMore[lang]}}</a></p>
                     </div>
                     <div ng-if="orderToShow.payed && !orderToShow.sent">
-                        <p>{{titles.showFacteurModal.moneyReceivedDate[lang]}}: {{orderToShow.payed}}</p>
+                        <p>{{titles.showFacteurModal.moneyReceivedDate[lang]}}: {{orderToShow.payed|date:'yyyy-MM-dd'}}</p>
                         <p>{{titles.showFacteurModal.facteurNotSent[lang]}}</p>
                     </div>
                     <div ng-if="orderToShow.payed && orderToShow.sent">
-                        <p>{{titles.showFacteurModal.moneyReceivedDate[lang]}}: {{orderToShow.payed}}</p>
-                        <p>{{titles.showFacteurModal.sendDate[lang]}}: {{orderToShow.sent}}</p>
+                        <p>{{titles.showFacteurModal.moneyReceivedDate[lang]}}: {{orderToShow.payed|date:'yyyy-MM-dd'}}</p>
+                        <p>{{titles.showFacteurModal.sendDate[lang]}}: {{orderToShow.sent|date:'yyyy-MM-dd'}}</p>
+                        <p>{{titles.section1Ad.trackNo[lang]}}: {{orderToShow.trackno}}</p>
                         <p>{{titles.showFacteurModal.notReceivedMsg[lang]}} {{titles.showFacteurModal.contact[lang]}}</p>
                     </div>
                 </div>

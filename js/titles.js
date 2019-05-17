@@ -95,6 +95,7 @@ Titles = {
         "messages":["Messages","Messages"], 
         "message":["Message","Message"], 
         "trackNo":["Tracking no.","No. de repérage"], 
+        "deletePendingConfirmText":["Pending purchases for more than 3 days will be deleted permanently. Are you sure?","Les achats en attente de plus de 3 jours seront définitivement supprimés. Êtes-vous sûr?"] 
     },
     "section2s":{
         "products":["products","produits"], 

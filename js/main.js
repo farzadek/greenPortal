@@ -123,10 +123,14 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
     
     $scope.glyphSort_user = [];  // glyphicon for sorting asc/desc
     $scope.glyphSort_message = [];  // glyphicon for sorting asc/desc
+    $scope.glyphSort_command = [];  // glyphicon for sorting asc/desc
     $scope.sortReverse_user  = true; // order by in DESC
+    $scope.sortReverse_command  = true; // order by in DESC
     $scope.sortReverse_message  = true; // order by in DESC
     $scope.glyphSort_user[0] = 'glyphicon glyphicon-sort-by-attributes';
     $scope.glyphSort_message[0] = 'glyphicon glyphicon-sort-by-attributes';
+    $scope.glyphSort_command[0] = 'glyphicon glyphicon-sort-by-attributes';
+
     $scope.purchaseToShowAdmin = []; // temp var, fill when admin click on + on admin page
     $scope.contactUsFormErrMsg = ''; // contact us form, error message
 
@@ -420,7 +424,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
                         } else {
                             $scope.facteur.cn += res.data.length+1;
                             var t = $scope.basket.total > $scope.min_purchase_to_free_send ? -$scope.postalPrice : 0;
-                            $scope.facteur.total = [$scope.basket.total, $scope.basket.total * 0, $scope.postalPrice, t, ($scope.basket.total + $scope.basket.total * 0 + $scope.postalPrice - t)];
+                            $scope.facteur.total = [$scope.basket.total, 0, $scope.postalPrice, t, ($scope.basket.total + $scope.postalPrice + t)];
                             grPortalService.saveFacteur($scope.facteur).then(
                                 function (res) {
                                     if (res.status != 200) {
@@ -521,6 +525,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
                     else{
                         $scope.showLoader = false;
                         $scope.purchasesInfo = response.data;
+                        $scope.purchasesInfo.forEach(elem=>elem.cn = parseInt(elem.cn));
                         $scope.totalItems = $scope.purchasesInfo.length;
                         $timeout(function () { $scope.showLoader=false; }, 300);
                     }
@@ -632,30 +637,32 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
     }
 /* --------------------------------------------------------------------------- */
     $scope.deletePendingPurchaseByAdm = function(){
-        var today = new Date();
-        today = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
-        $scope.purchasesInfo.forEach(element => { 
-            if(!element.payed){
-                var d1 = new Date(element.date);
-                date2 = Date.UTC(d1.getFullYear(), d1.getMonth(), d1.getDate());
-                if(Math.floor((Math.abs(today-date2)-1)/1000/60/60/24)>2){
-                    grPortalService.deleteFacteur(element._id.$oid).then(
-                        function(res){
-                            if(res.status!=200){ alert($scope.titles.alerts.informationLoad[$scope.lang]);}
-                            else{
-                                $timeout(function () { $scope.showLoader=false; }, 300);
-                                $('#show_info_tea').modal('hide');
-                                $scope.dataRefreshPurchase();
+        if (confirm($scope.titles.section1Ad.deletePendingConfirmText[$scope.lang])) {
+            var today = new Date();
+            today = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+            $scope.purchasesInfo.forEach(element => { 
+                if(!element.payed){
+                    var d1 = new Date(element.date);
+                    date2 = Date.UTC(d1.getFullYear(), d1.getMonth(), d1.getDate());
+                    if(Math.floor((Math.abs(today-date2)-1)/1000/60/60/24)>2){
+                        grPortalService.deleteFacteur(element._id.$oid).then(
+                            function(res){
+                                if(res.status!=200){ alert($scope.titles.alerts.informationLoad[$scope.lang]);}
+                                else{
+                                    $timeout(function () { $scope.showLoader=false; }, 300);
+                                    $('#show_info_tea').modal('hide');
+                                    $scope.dataRefreshPurchase();
+                                }
+                            },
+                            function(){
+                                alert($scope.titles.alerts.informationLoad[$scope.lang]);
                             }
-                        },
-                        function(){
-                            alert($scope.titles.alerts.informationLoad[$scope.lang]);
-                        }
-                    );
+                        );
+                    }
                 }
-            }
-        });
-        $scope.dataRefreshPurchase();
+            });
+            $scope.dataRefreshPurchase();
+        }
     }
 /* --------------------------------------------------------------------------- */
     $scope.savePurchaseByAdm = function(){
@@ -856,6 +863,23 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
     }
 
 /* --------------------------------------------------------------------------- */
+$scope.sorting_command = function(colSelected){
+    switch (colSelected){
+        case 0: $scope.sortType_command = 'date'; break;
+        case 1: $scope.sortType_command = 'cn'; break;
+        case 2: $scope.sortType_command = 'payed'; break;
+        case 3: $scope.sortType_command = 'sent'; break;
+    }
+    
+    $scope.sortReverse_command = !$scope.sortReverse_command;
+    for(var i=0;i<6;i++) $scope.glyphSort_command[i] = '';
+    if(!$scope.sortReverse_command)
+        $scope.glyphSort_command[colSelected] = 'glyphicon glyphicon-sort-by-attributes';
+    else
+        $scope.glyphSort_command[colSelected] = 'glyphicon glyphicon-sort-by-attributes-alt';
+}
+
+/* --------------------------------------------------------------------------- */
     $scope.sorting_user = function(colSelected){
         switch (colSelected){
             case 0: $scope.sortType_user = 'id'; break;
@@ -865,7 +889,7 @@ app.controller('mainCtrl', function($scope, $cookieStore, $http, $timeout, grPor
         }
         
         $scope.sortReverse_user = !$scope.sortReverse_user;
-        for(var i=0;i<10;i++) $scope.glyphSort_user[i] = '';
+        for(var i=0;i<5;i++) $scope.glyphSort_user[i] = '';
         if(!$scope.sortReverse_user)
             $scope.glyphSort_user[colSelected] = 'glyphicon glyphicon-sort-by-attributes';
         else
