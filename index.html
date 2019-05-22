@@ -561,42 +561,45 @@
                     </div>
 
                     <div id="membership" class="tab-pane fade">
-                        <form name="userConditionForm">
-                            <div class="row condition">
-                                <ul>
-                                    <li><input type="checkbox" id="checkboxOne" ng-model="currentUser.condition[0]" ng-checked="currentUser.condition[0]"><label for="checkboxOne">{{titles.index.iHave19[lang]}}</label></li>
-                                    <li><input type="checkbox" id="checkboxTwo" ng-model="currentUser.condition[1]" ng-checked="currentUser.condition[1]"><label for="checkboxTwo">{{titles.index.iAmCitizen[lang]}}</label></li>
-                                    <li><input type="checkbox" id="checkboxThree" ng-model="currentUser.condition[2]" ng-checked="currentUser.condition[2]"><label for="checkboxThree">{{titles.index.condition3[lang]}}</label></li>
-                                </ul>
-                            </div>
-                            <hr/>
-                        </form>
+                        <h4 ng-if="currentUser.confirm">{{titles.index.youAreConfirmed[lang]}}</h4>
+                        <article ng-if="!currentUser.confirm">
+                            <form name="userConditionForm">
+                                <div class="row condition">
+                                    <ul>
+                                        <li><input type="checkbox" id="checkboxOne" ng-model="currentUser.condition[0]" ng-checked="currentUser.condition[0]"><label for="checkboxOne">{{titles.index.iHave19[lang]}}</label></li>
+                                        <li><input type="checkbox" id="checkboxTwo" ng-model="currentUser.condition[1]" ng-checked="currentUser.condition[1]"><label for="checkboxTwo">{{titles.index.iAmCitizen[lang]}}</label></li>
+                                        <li><input type="checkbox" id="checkboxThree" ng-model="currentUser.condition[2]" ng-checked="currentUser.condition[2]"><label for="checkboxThree">{{titles.index.condition3[lang]}}</label></li>
+                                    </ul>
+                                </div>
+                                <hr/>
+                            </form>
 
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <h4><strong>{{titles.index.uploadMsg[lang]}}</strong></h4>
-                                {{titles.index.photoMsg[lang]}}
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    <h4><strong>{{titles.index.uploadMsg[lang]}}</strong></h4>
+                                    {{titles.index.photoMsg[lang]}}
+                                </div>
+                                <div class="form-group col-xs-12">
+                                    <input type="file" file-input="files" id="inputFile" accept="image/*" />
+                                </div>
+                                <div class="form-group col-xs-12">
+                                    <button ng-disabled="!files" ng-click="uploadFile()" class="btn btn-primary">Upload
+                                        File</button>
+                                </div>
                             </div>
-                            <div class="form-group col-xs-12">
-                                <input type="file" file-input="files" id="inputFile" accept="image/*" />
+                            <div class="row docs">
+                                <div class="col-xs-6 col-sm-4" ng-repeat="doc in currentUserDocs" ng-if="doc.active">
+                                    <a ng-click="removeImageFromProfile(doc)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                    <a class="preview-image" target="_blank" href="images/docs/{{doc.name}}"><img ng-src="images/docs/{{doc.name}}"></a>
+                                </div>
                             </div>
-                            <div class="form-group col-xs-12">
-                                <button ng-disabled="!files" ng-click="uploadFile()" class="btn btn-primary">Upload
-                                    File</button>
+                            <div class="col-xs-12 successMsg" ng-if=" showPhotoSuccesMsg">{{titles.index.photoReceived[lang]}}</div>
+                            <hr/>
+                            <div class="row">
+                                <button ng-click="saveUserConditions()" ng-disabled="!userConditionForm.$dirty"
+                                        class="btn btn-primary">{{titles.index.save[lang]}}</button>
                             </div>
-                        </div>
-                        <div class="row docs">
-                            <div class="col-xs-6 col-sm-4" ng-repeat="doc in currentUserDocs" ng-if="doc.active">
-                                <a ng-click="removeImageFromProfile(doc)"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                <a class="preview-image" target="_blank" href="images/docs/{{doc.name}}"><img ng-src="images/docs/{{doc.name}}"></a>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 successMsg" ng-if=" showPhotoSuccesMsg">{{titles.index.photoReceived[lang]}}</div>
-                        <hr/>
-                        <div class="row">
-                            <button ng-click="saveUserConditions()" ng-disabled="!userConditionForm.$dirty"
-                                    class="btn btn-primary">{{titles.index.save[lang]}}</button>
-                        </div>
+                        </article>
                     </div>
 
                     <div id="purchase" class="tab-pane fade in active">

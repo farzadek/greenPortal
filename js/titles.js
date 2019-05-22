@@ -150,7 +150,8 @@ Titles = {
         "photoMsg": ["Take a photo of a valid government ID (such as a passport or driver’s license)", "Prenez une photo d'une pièce d'identité gouvernementale valide (comme un passeport ou un permis de conduire)"],
         "photoReceived": ["Thank you, an identity verification will be done by Greenportal.ca", "Merci, une vérification d'identité sera faite par Greenportal.ca"],
         "forgotPassword": ["Forgot password?", "Mot de passe oublié?"],
-        "fp_msg": ["To retrieve your Password, please enter your email address (user name).","Afin de récupérer votre Mot de passe, veuillez saisir votre adresse de courriel (Nom d\'utilisateur)."]
+        "fp_msg": ["To retrieve your Password, please enter your email address (user name).","Afin de récupérer votre Mot de passe, veuillez saisir votre adresse de courriel (Nom d\'utilisateur)."],
+        "youAreConfirmed": ["you are now member of greenportal.ca", "Vous êtes maintenant membre de greenportal.ca"]
     },
     "purchase":{
         "clietInfoTitle":["Client's information","Informations du client"],
